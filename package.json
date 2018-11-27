@@ -1,12 +1,18 @@
 {
   "name": "water-vehicle-rental-client",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build"
   },
   "dependencies": {
+    "@material/button": "^0.41.0",
+    "@material/drawer": "^0.41.1",
+    "@material/elevation": "^0.41.0",
+    "@material/icon-button": "^0.41.0",
+    "@material/textfield": "^0.41.0",
+    "@material/typography": "^0.41.0",
     "vue": "^2.5.17",
     "vue-router": "^3.0.1",
     "vuex": "^3.0.1"
