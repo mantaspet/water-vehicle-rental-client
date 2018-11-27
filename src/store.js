@@ -3,15 +3,17 @@ import Vuex from 'vuex';
 import firebase from 'firebase';
 import router from './router';
 import { MDCDrawer } from '@material/drawer';
-import { MDCSnackbar, MDCSnackbarFoundation } from '@material/snackbar';
+import { MDCSnackbar } from '@material/snackbar';
 
-Vue.use(Vuex)
+Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
     drawer: null,
     snackbar: null,
+    progress: false,
   },
+
   mutations: {
     initDrawer(state, type) {
       if (type === 'modal') {
@@ -58,7 +60,16 @@ export default new Vuex.Store({
         router.replace({ name: 'login' });
       });
     },
+
+    showProgress(state) {
+      state.progress = true;
+    },
+
+    hideProgress(state) {
+      state.progress = false;
+    },
   },
+
   actions: {
 
   }

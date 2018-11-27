@@ -94,14 +94,16 @@ export default {
 
   methods: {
     login() {
-      console.log("hm");
+      this.$store.commit('showProgress');
       firebase
         .auth()
         .signInWithEmailAndPassword(this.email, this.password)
         .then(res => {
+          this.$store.commit('hideProgress');
           this.$router.replace({ name: "home" });
         })
         .catch(err => {
+          this.$store.commit('hideProgress');
           this.$store.commit("openSnackbar", {
             message: err.message
           });

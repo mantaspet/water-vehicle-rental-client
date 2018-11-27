@@ -1,5 +1,15 @@
 <template>
   <div id="app">
+    <div v-if="$store.state.progress" role="progressbar" class="mdc-linear-progress mdc-linear-progress--indeterminate">
+      <div class="mdc-linear-progress__buffering-dots"></div>
+      <div class="mdc-linear-progress__buffer"></div>
+      <div class="mdc-linear-progress__bar mdc-linear-progress__primary-bar">
+        <span class="mdc-linear-progress__bar-inner"></span>
+      </div>
+      <div class="mdc-linear-progress__bar mdc-linear-progress__secondary-bar">
+        <span class="mdc-linear-progress__bar-inner"></span>
+      </div>
+    </div>
     <aside class="mdc-drawer mdc-drawer--dismissible">
       <div class="mdc-drawer__content">
         <nav v-if="!hideDrawer" class="mdc-list">
@@ -27,12 +37,7 @@
       >menu</button>
       <router-view/>
     </div>
-    <div
-      class="mdc-snackbar"
-      aria-live="assertive"
-      aria-atomic="true"
-      aria-hidden="true"
-    >
+    <div class="mdc-snackbar" aria-live="assertive" aria-atomic="true" aria-hidden="true">
       <div class="mdc-snackbar__text"></div>
       <div class="mdc-snackbar__action-wrapper">
         <button type="button" class="mdc-snackbar__action-button"></button>
@@ -87,8 +92,8 @@ export default {
     },
 
     logout() {
-      this.$store.commit('logout');
-    },
+      this.$store.commit("logout");
+    }
   }
 };
 </script>
@@ -112,6 +117,7 @@ export default {
 @import "@material/typography/mdc-typography";
 @import "@material/elevation/mdc-elevation";
 @import "@material/snackbar/mdc-snackbar";
+@import "@material/linear-progress/mdc-linear-progress";
 
 body {
   height: 100vh;
@@ -123,6 +129,10 @@ body {
 .mdc-drawer-app-content {
   flex: auto;
   overflow: auto;
+}
+
+.mdc-linear-progress {
+  position: absolute;
 }
 
 .main-content {
