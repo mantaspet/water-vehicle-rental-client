@@ -12,10 +12,10 @@
             <span class="mdc-list-item__text">Naudotojai</span>
           </router-link>
           <hr class="mdc-list-divider">
-          <router-link class="mdc-list-item" to="/login">
+          <a class="mdc-list-item" @click="logout">
             <i class="material-icons mdc-list-item__graphic" aria-hidden="true">exit_to_app</i>
             <span class="mdc-list-item__text">Atsijungti</span>
-          </router-link>
+          </a>
         </nav>
       </div>
     </aside>
@@ -26,6 +26,17 @@
         @click="toggleDrawer"
       >menu</button>
       <router-view/>
+    </div>
+    <div
+      class="mdc-snackbar"
+      aria-live="assertive"
+      aria-atomic="true"
+      aria-hidden="true"
+    >
+      <div class="mdc-snackbar__text"></div>
+      <div class="mdc-snackbar__action-wrapper">
+        <button type="button" class="mdc-snackbar__action-button"></button>
+      </div>
     </div>
   </div>
 </template>
@@ -38,8 +49,8 @@ export default {
 
   data() {
     return {
-      hideDrawerIn: ['login', 'signup'],  
-    }
+      hideDrawerIn: ["login", "signup"]
+    };
   },
 
   computed: {
@@ -51,29 +62,34 @@ export default {
   watch: {
     $route(to, from) {
       if (this.hideDrawerIn.includes(to.name)) {
-        this.$store.commit('hideDrawer');
+        this.$store.commit("hideDrawer");
       } else {
-        this.$store.commit('openDrawer');
+        this.$store.commit("openDrawer");
       }
     }
   },
 
   mounted() {
+    this.$store.commit("initDrawer");
+    this.$store.commit("initSnackbar");
     const iconButtonRipple = new MDCRipple(
       document.querySelector(".mdc-icon-button")
     );
     iconButtonRipple.unbounded = true;
-    this.$store.commit('initDrawer');
     if (!this.hideDrawerIn.includes(this.$route.name)) {
-      this.$store.commit('openDrawer');
+      this.$store.commit("openDrawer");
     }
   },
 
   methods: {
     toggleDrawer() {
       this.$store.commit("toggleDrawer");
-    }
-  },
+    },
+
+    logout() {
+      this.$store.commit('logout');
+    },
+  }
 };
 </script>
 
@@ -95,6 +111,7 @@ export default {
 @import "@material/textfield/mdc-text-field";
 @import "@material/typography/mdc-typography";
 @import "@material/elevation/mdc-elevation";
+@import "@material/snackbar/mdc-snackbar";
 
 body {
   height: 100vh;
