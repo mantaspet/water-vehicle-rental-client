@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <div v-if="$store.state.progress" role="progressbar" class="mdc-linear-progress mdc-linear-progress--indeterminate">
+    <div v-if="$store.state.ui.progress" role="progressbar" class="mdc-linear-progress mdc-linear-progress--indeterminate">
       <div class="mdc-linear-progress__buffering-dots"></div>
       <div class="mdc-linear-progress__buffer"></div>
       <div class="mdc-linear-progress__bar mdc-linear-progress__primary-bar">
