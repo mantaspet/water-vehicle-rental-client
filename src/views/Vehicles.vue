@@ -23,6 +23,7 @@
             <button
               class="material-icons mdc-icon-button"
               title="Trinti"
+              @click="deleteVehicle(vehicle, index)"
             >delete</button>
           </td>
         </tr>
@@ -78,6 +79,13 @@ export default {
         index,
       });
     },
+
+    deleteVehicle(vehicle, index) {
+      this.$store.dispatch('deleteVehicle', {
+        vehicle,
+        index,
+      })
+    }
   }
 };
 </script>

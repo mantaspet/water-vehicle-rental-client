@@ -22,6 +22,15 @@ export default {
 			state.vehicleDialog = new MDCDialog(document.querySelector("#vehicle-dialog"));
 		},
 
+		storeUpdatedVehicle(state, vehicle) {
+			state.vehicles.splice(state.vehicleIndex, 1, vehicle);
+			state.vehicleDialog.close();
+		},
+
+		storeVehicles(state, vehicles) {
+			state.vehicles = vehicles;
+		},
+
 		createVehicle(state) {
 			state.vehicle = {};
 			state.vehicleIndex = -1;
@@ -39,14 +48,9 @@ export default {
 			state.vehicleDialog.close();
 		},
 
-		storeUpdatedVehicle(state, vehicle) {
-			state.vehicles.splice(state.vehicleIndex, 1, vehicle);
-			state.vehicleDialog.close();
+		removeVehicle(state, index) {
+			state.vehicles.splice(index, 1);
 		},
-
-		storeVehicles(state, vehicles) {
-			state.vehicles = vehicles;
-		}
 	},
 
 	actions: {
@@ -84,14 +88,12 @@ export default {
 		updateVehicle({ commit }, vehicle) {
 			const id = vehicle.id;
 			delete vehicle.id;
-			console.log(id);
 			firebase
 				.firestore()
 				.collection('vehicles')
 				.doc(id)
 				.update(vehicle)
-				.then((res) => {
-					console.log(res);
+				.then(() => {
 					vehicle.id = id;
 					commit('storeUpdatedVehicle', vehicle);
 					commit('openSnackbar', {
@@ -99,5 +101,28 @@ export default {
 					});
 				});
 		},
+
+		deleteVehicle({ commit }, payload) {
+			commit('openConfirmDialog', {
+        title: '',
+        body: 'Ištrinti transporto priemonę?'
+      });
+      EventBus.$on('confirmDialogClosed', (confirmed) => {
+        if (confirmed) {
+					firebase
+						.firestore()
+						.collection('vehicles')
+						.doc(payload.vehicle.id)
+						.delete()
+						.then(() => {
+							commit('removeVehicle', payload.index);
+							commit('openSnackbar', {
+								message: 'Transporto priemonė ištrinta',
+							});
+						});
+        }
+        EventBus.$off('confirmDialogClosed');
+      });
+		}
 	}
 };
