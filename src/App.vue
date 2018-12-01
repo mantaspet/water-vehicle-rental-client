@@ -16,6 +16,15 @@
     </div>
     <aside class="mdc-drawer mdc-drawer--dismissible">
       <div class="mdc-drawer__content">
+        <div style="text-align: center; margin: 16px">
+          <img
+            alt="site-logo"
+            src="./assets/logo.png"
+            height="100"
+            style="cursor: pointer"
+            @click="$router.push({ name: 'home' })"
+          >
+        </div>
         <nav v-if="!hideDrawer" class="mdc-list">
           <router-link
             v-for="item in navigationItems"
@@ -135,6 +144,12 @@ body {
   font-family: "Roboto", sans-serif;
   margin: 0;
   padding-top: 0.1px; // Prevent header h1 margin from pushing body down
+}
+
+.site-logo {
+  padding-top: 16px;
+  text-align: center;
+  margin: 16px;
 }
 
 .mdc-drawer-app-content {
