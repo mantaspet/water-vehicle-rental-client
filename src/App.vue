@@ -58,6 +58,44 @@
         <button type="button" class="mdc-snackbar__action-button"></button>
       </div>
     </div>
+
+    <div
+      class="mdc-dialog"
+      role="alertdialog"
+      aria-modal="true"
+      aria-labelledby="my-dialog-title"
+      aria-describedby="my-dialog-content"
+    >
+      <div class="mdc-dialog__container">
+        <div class="mdc-dialog__surface">
+          <h2
+            v-if="$store.getters.confirmDialogContent.title"
+            class="mdc-dialog__title"
+            id="my-dialog-title"
+          >{{ $store.getters.confirmDialogContent.title }}</h2>
+          <div
+            v-if="$store.getters.confirmDialogContent.body"
+            class="mdc-dialog__content"
+            id="my-dialog-content"
+          >{{ $store.getters.confirmDialogContent.body }}</div>
+          <footer class="mdc-dialog__actions">
+            <button
+              type="button"
+              class="mdc-button mdc-dialog__button"
+              data-mdc-dialog-action="no"
+              @click="$eventBus.$emit('confirmDialogClosed', false)"
+            >Ne</button>
+            <button
+              type="button"
+              class="mdc-button mdc-dialog__button"
+              data-mdc-dialog-action="yes"
+              @click="$eventBus.$emit('confirmDialogClosed', true)"
+            >Taip</button>
+          </footer>
+        </div>
+      </div>
+      <div class="mdc-dialog__scrim"></div>
+    </div>
   </div>
 </template>
 
@@ -97,6 +135,7 @@ export default {
   mounted() {
     this.$store.commit("initDrawer");
     this.$store.commit("initSnackbar");
+    this.$store.commit("initConfirmDialog");
     const iconButtonRipple = new MDCRipple(
       document.querySelector(".mdc-icon-button")
     );
@@ -139,6 +178,7 @@ export default {
 @import "@material/snackbar/mdc-snackbar";
 @import "@material/linear-progress/mdc-linear-progress";
 @import "@material/card/mdc-card";
+@import "@material/dialog/mdc-dialog";
 
 body {
   height: 100vh;

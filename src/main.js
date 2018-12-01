@@ -4,8 +4,10 @@ import App from './App.vue';
 import router from './router';
 import store from './store/index';
 import { initFirebase } from './firebase-config';
+import { EventBus } from './event-bus';
 
 Vue.config.productionTip = false;
+Vue.prototype.$eventBus = EventBus;
 initFirebase();
 
 let app;
@@ -17,7 +19,10 @@ firebase.auth().onAuthStateChanged((user) => {
       router,
       store,
       render: h => h(App)
-    }).$mount('#app');    
+    }).$mount('#app');
+    if (user) {
+      store.dispatch('getCurrentUser', user.uid);
+    }
   }
 });
 

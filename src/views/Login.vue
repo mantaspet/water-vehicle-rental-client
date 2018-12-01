@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="text-align: center">
     <section class="header">
       <div class="site-logo">
         <img
@@ -76,20 +76,10 @@ export default {
 
   methods: {
     login() {
-      this.$store.commit("showProgress");
-      firebase
-        .auth()
-        .signInWithEmailAndPassword(this.email, this.password)
-        .then(res => {
-          this.$store.commit("hideProgress");
-          this.$router.replace({ name: "home" });
-        })
-        .catch(err => {
-          this.$store.commit("hideProgress");
-          this.$store.commit("openSnackbar", {
-            message: err.message
-          });
-        });
+      this.$store.dispatch('login', {
+        email: this.email,
+        password: this.password,
+      })
     }
   }
 };
@@ -115,6 +105,5 @@ export default {
 
 .button-container button {
   width: 100%;
-  margin: 3px;
 }
 </style>

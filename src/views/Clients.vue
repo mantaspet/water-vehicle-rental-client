@@ -6,10 +6,18 @@
         <th v-for="header in headers" :key="header">{{ header }}</th>
       </template>
       <template slot="items">
-        <tr v-for="client in clients" :key="client.email">
-          <td>{{ client.name }}</td>
+        <tr v-for="client in $store.getters.clients" :key="client.email">
+          <td>{{ client.firstName }} {{ client.lastName }}</td>
           <td>{{ client.email }}</td>
-          <td>{{ client.userId }}</td>
+          <td>{{ client.accountNo }}</td>
+          <td>{{ client.dob }}</td>
+          <td>
+            <button
+              class="material-icons mdc-icon-button"
+              title="Blokuoti"
+              @click="suspendClient"
+            >block</button>
+          </td>
         </tr>
       </template>
     </DataTable>
@@ -29,27 +37,17 @@ export default {
 
   data() {
     return {
-      clients: [],
-      headers: ["Vardas", "El. paštas", "Naudotojo ID"]
+      headers: ["Vardas pavardė", "El. paštas", "Sąskaitos nr.", "Gimimo data", "Veiksmai"]
     };
   },
 
   created() {
-    this.getUsers();
+    this.$store.dispatch('getClients');
   },
-
+  
   methods: {
-    getUsers() {
-      firebase
-        .firestore()
-        .collection("clients")
-        .get()
-        .then(res => {
-          res.forEach(doc => {
-            this.clients.push(doc.data());
-          });
-          console.log(JSON.parse(JSON.stringify(this.clients)));
-        });
+    suspendClient() {
+      this.$store.dispatch('suspendClient');
     }
   }
 };

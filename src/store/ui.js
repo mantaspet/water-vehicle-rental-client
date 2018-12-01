@@ -1,11 +1,23 @@
 import { MDCDrawer } from '@material/drawer';
 import { MDCSnackbar } from '@material/snackbar';
+import { MDCDialog } from '@material/dialog';
 
 export default {
 	state: {
 		drawer: null,
 		snackbar: null,
 		progress: false,
+		confirmDialog: null,
+		confirmDialogContent: {
+			title: '',
+			body: '',
+		}
+	},
+
+	getters: {
+		confirmDialogContent(state) {
+			return state.confirmDialogContent;
+		}
 	},
 
 	mutations: {
@@ -55,6 +67,16 @@ export default {
 
 		hideProgress(state) {
 			state.progress = false;
+		},
+
+		initConfirmDialog(state) {
+			state.confirmDialog = new MDCDialog(document.querySelector(".mdc-dialog"));
+		},
+		
+		openConfirmDialog(state, payload) {
+			state.confirmDialogContent.title = payload.title;
+			state.confirmDialogContent.body = payload.body;
+			state.confirmDialog.open();
 		},
 	},
 
