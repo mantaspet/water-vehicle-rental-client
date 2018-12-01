@@ -151,7 +151,7 @@ export default {
     },
 
     logout() {
-      this.$store.commit("logout");
+      this.$store.dispatch("logout");
     }
   }
 };
@@ -191,6 +191,11 @@ body {
   padding-top: 16px;
   text-align: center;
   margin: 16px;
+}
+
+.alert-text {
+  font-weight: bold;
+  color: red;
 }
 
 .mdc-drawer-app-content {

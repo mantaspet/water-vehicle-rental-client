@@ -7,15 +7,16 @@
       </template>
       <template slot="items">
         <tr v-for="client in $store.getters.clients" :key="client.email">
-          <td>{{ client.firstName }} {{ client.lastName }}</td>
+          <td>{{ client.firstName }} {{ client.lastName }} <span v-if="!client.isActive" class="alert-text">(užblokuotas)</span></td>
           <td>{{ client.email }}</td>
           <td>{{ client.accountNo }}</td>
           <td>{{ client.dob }}</td>
           <td>
             <button
+              v-if="client.isActive"
               class="material-icons mdc-icon-button"
               title="Blokuoti"
-              @click="suspendClient"
+              @click="suspendClient(client)"
             >block</button>
           </td>
         </tr>
@@ -46,8 +47,8 @@ export default {
   },
   
   methods: {
-    suspendClient() {
-      this.$store.dispatch('suspendClient');
+    suspendClient(client) {
+      this.$store.dispatch('suspendClient', client);
     }
   }
 };

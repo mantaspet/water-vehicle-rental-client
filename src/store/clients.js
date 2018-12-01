@@ -16,6 +16,11 @@ export default {
 	mutations: {
 		storeClients(state, clients) {
 			state.clients = clients;
+		},
+
+		updateClient(state, updatedClient) {
+			const index = state.clients.findIndex(client => client.userId === updatedClient.userId);
+			state.clients.splice(index, 1, updatedClient);
 		}
 	},
 
@@ -44,6 +49,9 @@ export default {
         .then(() => {
           commit("storeCurrentUser", client);
 					commit("hideProgress");
+					commit("openSnackbar", {
+						message: "Registracija sėkminga"
+					});
 					router.replace({ name: "home" });
         })
         .catch(err => {
@@ -55,15 +63,25 @@ export default {
         });
 		},
 
-		suspendClient({ commit }) {
+		suspendClient({ commit }, client) {
 			commit('openConfirmDialog', {
         title: '',
         body: 'Blokuoti klientą?'
       });
       EventBus.$on('confirmDialogClosed', (confirmed) => {
-        console.log(confirmed);
         if (confirmed) {
-          //firebase.auth().
+					client.isActive = false;
+					firebase
+						.firestore()
+						.collection('users')
+						.doc(client.userId)
+						.set(client)
+						.then(() => {
+							commit('updateClient', client);
+							commit('openSnackbar', {
+								message: 'Klientas užblokuotas',
+							});
+						});
         }
         EventBus.$off('confirmDialogClosed');
       });

@@ -25,10 +25,8 @@ export default {
 				.auth()
 				.createUserWithEmailAndPassword(client.email, client.password)
 				.then(res => {
-					commit("openSnackbar", {
-						message: "Registracija sėkminga"
-					});
 					client.userId = res.user.uid;
+					delete client.password;
 					dispatch('createClient', client);
 				})
 				.catch(err => {
@@ -54,7 +52,13 @@ export default {
         });
 		},
 
-		getCurrentUser({ commit }, userId) {
+		logout() {
+      firebase.auth().signOut().then(() => {
+        router.replace({ name: 'login' });
+      });
+    },
+
+		getCurrentUser({ commit, dispatch }, userId) {
 			firebase
 				.firestore()
 				.collection('users')
@@ -62,9 +66,18 @@ export default {
 				.get()
 				.then(doc => {
 					if (doc.exists) {
-						commit('storeCurrentUser', doc.data());
-						commit("hideProgress");
-						router.replace({ name: "home" });
+						if (doc.data().isActive) {
+							commit('storeCurrentUser', doc.data());
+							commit("hideProgress");
+							router.replace({ name: "home" });
+						} else {
+							commit('openSnackbar', {
+								message: 'Paskyra užblokuota',
+							});
+							commit("hideProgress");
+							dispatch('logout');
+							router.replace({ name: "login" });
+						}
 					} else {
 						commit('openSnackbar', {
 							message: 'Naudotojas neegzistuoja',

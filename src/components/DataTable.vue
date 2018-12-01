@@ -4,7 +4,7 @@
 		<thead>
 			<slot name="headers"></slot>
 		</thead>
-		<tbody>
+		<tbody :class="{'clickable-rows': clickableRows}">
 			<slot name="items"></slot>
 		</tbody>
 	</table>
@@ -14,6 +14,13 @@
 <script>
 export default {
 	name: "DataTable",
+
+	props: {
+		clickableRows: {
+			type: Boolean,
+			default: false,
+		}
+	},
 }
 </script>
 
@@ -44,7 +51,7 @@ tr, th {
 	height: 48px;
 }
 
-tr:hover {
+.clickable-rows tr:hover {
 	cursor: pointer;
 	background: #eee;
 }
