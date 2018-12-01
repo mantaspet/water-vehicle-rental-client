@@ -1,6 +1,10 @@
 <template>
   <div id="app">
-    <div v-if="$store.state.ui.progress" role="progressbar" class="mdc-linear-progress mdc-linear-progress--indeterminate">
+    <div
+      v-if="$store.state.ui.progress"
+      role="progressbar"
+      class="mdc-linear-progress mdc-linear-progress--indeterminate"
+    >
       <div class="mdc-linear-progress__buffering-dots"></div>
       <div class="mdc-linear-progress__buffer"></div>
       <div class="mdc-linear-progress__bar mdc-linear-progress__primary-bar">
@@ -13,13 +17,15 @@
     <aside class="mdc-drawer mdc-drawer--dismissible">
       <div class="mdc-drawer__content">
         <nav v-if="!hideDrawer" class="mdc-list">
-          <router-link class="mdc-list-item mdc-list-item--activated" to="/" aria-selected="true">
-            <i class="material-icons mdc-list-item__graphic" aria-hidden="true">home</i>
-            <span class="mdc-list-item__text">Home</span>
-          </router-link>
-          <router-link class="mdc-list-item" to="/users">
-            <i class="material-icons mdc-list-item__graphic" aria-hidden="true">person</i>
-            <span class="mdc-list-item__text">Naudotojai</span>
+          <router-link
+            v-for="item in navigationItems"
+            :key="item.route"
+            :class="['mdc-list-item', { 'mdc-list-item--activated': $route.fullPath === item.route }]"
+            :to="item.route"
+            aria-selected="true"
+          >
+            <i class="material-icons mdc-list-item__graphic" aria-hidden="true">{{ item.icon }}</i>
+            <span class="mdc-list-item__text">{{ item.text }}</span>
           </router-link>
           <hr class="mdc-list-divider">
           <a class="mdc-list-item" @click="logout">
@@ -35,7 +41,7 @@
         class="mdc-icon-button material-icons ma-1"
         @click="toggleDrawer"
       >menu</button>
-      <router-view/>
+      <router-view style="padding: 16px"/>
     </div>
     <div class="mdc-snackbar" aria-live="assertive" aria-atomic="true" aria-hidden="true">
       <div class="mdc-snackbar__text"></div>
@@ -54,7 +60,12 @@ export default {
 
   data() {
     return {
-      hideDrawerIn: ["login", "signup"]
+      hideDrawerIn: ["login", "signup"],
+      navigationItems: [
+        { text: "Transporto priemonės", route: "/", icon: "home" },
+        { text: "Naudotojai", route: "/users", icon: "person" },
+        { text: "Apie įmonę", route: "/about", icon: "description" }
+      ]
     };
   },
 
