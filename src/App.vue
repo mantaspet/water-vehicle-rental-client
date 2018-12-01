@@ -138,6 +138,7 @@ export default {
 @import "@material/elevation/mdc-elevation";
 @import "@material/snackbar/mdc-snackbar";
 @import "@material/linear-progress/mdc-linear-progress";
+@import "@material/card/mdc-card";
 
 body {
   height: 100vh;

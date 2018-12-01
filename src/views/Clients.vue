@@ -1,7 +1,6 @@
 <template>
   <div>
     <h2>Klientų sąrašas</h2>
-
     <DataTable>
       <template slot="headers">
         <th v-for="header in headers" :key="header">{{ header }}</th>
