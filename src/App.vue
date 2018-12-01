@@ -60,6 +60,7 @@
     </div>
 
     <div
+      id="confirm-dialog"
       class="mdc-dialog"
       role="alertdialog"
       aria-modal="true"
@@ -179,12 +180,17 @@ export default {
 @import "@material/linear-progress/mdc-linear-progress";
 @import "@material/card/mdc-card";
 @import "@material/dialog/mdc-dialog";
+@import "@material/fab/mdc-fab";
 
 body {
   height: 100vh;
   font-family: "Roboto", sans-serif;
   margin: 0;
   padding-top: 0.1px; // Prevent header h1 margin from pushing body down
+}
+
+#app {
+  height: 100%;
 }
 
 .site-logo {
@@ -201,10 +207,17 @@ body {
 .mdc-drawer-app-content {
   flex: auto;
   overflow: auto;
+  height: 100%;
 }
 
 .mdc-linear-progress {
   position: absolute;
+}
+
+.mdc-fab {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
 }
 
 .main-content {

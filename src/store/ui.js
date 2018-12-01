@@ -70,7 +70,7 @@ export default {
 		},
 
 		initConfirmDialog(state) {
-			state.confirmDialog = new MDCDialog(document.querySelector(".mdc-dialog"));
+			state.confirmDialog = new MDCDialog(document.querySelector("#confirm-dialog"));
 		},
 		
 		openConfirmDialog(state, payload) {

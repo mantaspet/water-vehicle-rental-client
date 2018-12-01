@@ -22,7 +22,7 @@
         </div>
         <br>
         <div id="email" class="mdc-text-field mdc-text-field--box">
-          <input v-model="email" type="text" class="mdc-text-field__input" required email>
+          <input v-model="email" type="email" class="mdc-text-field__input" required email>
           <label class="mdc-floating-label" for="email-input">El. paštas</label>
           <div class="mdc-line-ripple"></div>
         </div>

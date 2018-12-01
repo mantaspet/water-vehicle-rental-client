@@ -12,20 +12,18 @@
     </section>
 
     <form @submit.prevent="login">
-      <div class="mdc-text-field mdc-text-field--box email">
+      <div id="email" class="mdc-text-field mdc-text-field--box">
         <input
           v-model="email"
-          type="text"
+          type="email"
           class="mdc-text-field__input"
           id="email-input"
-          name="email"
           required
-          email
         >
         <label class="mdc-floating-label" for="email-input">El. paštas</label>
         <div class="mdc-line-ripple"></div>
       </div>
-      <div class="mdc-text-field mdc-text-field--box password">
+      <div id="password" class="mdc-text-field mdc-text-field--box">
         <input
           v-model="password"
           type="password"
@@ -68,8 +66,8 @@ export default {
   },
 
   mounted() {
-    new MDCTextField(document.querySelector(".email"));
-    new MDCTextField(document.querySelector(".password"));
+    new MDCTextField(document.querySelector("#email"));
+    new MDCTextField(document.querySelector("#password"));
     new MDCRipple(document.querySelector("#loginBtn"));
     new MDCRipple(document.querySelector("#signupBtn"));
   },
@@ -90,8 +88,7 @@ export default {
   text-align: center;
 }
 
-.email,
-.password {
+.mdc-text-field {
   display: block;
   width: 300px;
   margin: 20px auto;
