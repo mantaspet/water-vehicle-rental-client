@@ -5,6 +5,29 @@
       <span class="material-icons mdc-fab__icon">add</span>
       <span class="mdc-fab__label">Sukurti naują</span>
     </button>
+    <DataTable clickable-rows>
+      <template slot="headers">
+        <th v-for="header in headers" :key="header">{{ header }}</th>
+      </template>
+      <template slot="items">
+        <tr v-for="(vehicle, index) in $store.getters.vehicles" :key="vehicle.id">
+          <td>{{ vehicle.brand }}</td>
+          <td>{{ vehicle.model }}</td>
+          <td>{{ vehicle.year }}</td>
+          <td>
+            <button
+              class="material-icons mdc-icon-button"
+              title="Redaguoti"
+              @click="editVehicle(vehicle, index)"
+            >edit</button>
+            <button
+              class="material-icons mdc-icon-button"
+              title="Trinti"
+            >delete</button>
+          </td>
+        </tr>
+      </template>
+    </DataTable>
     <VehicleFormDialog
       :vehicle="$store.state.vehicles.vehicle"
       :index="$store.state.vehicles.vehicleIndex"
@@ -13,6 +36,7 @@
 </template>
 
 <script>
+import DataTable from "../components/DataTable";
 import { MDCRipple } from "@material/ripple";
 import VehicleFormDialog from "../components/VehicleFormDialog";
 
@@ -20,7 +44,18 @@ export default {
   name: "Vehicles",
 
   components: {
-    VehicleFormDialog
+    DataTable,
+    VehicleFormDialog,
+  },
+
+  data() {
+    return {
+      headers: ["Markė", "Modelis", "Metai", "Veiksmai"]
+    };
+  },
+
+  created() {
+    this.$store.dispatch('getVehicles');
   },
 
   mounted() {
@@ -35,7 +70,14 @@ export default {
 
     createVehicle() {
       this.$store.commit("createVehicle");
-    }
+    },
+
+    editVehicle(vehicle, index) {
+      this.$store.commit("editVehicle", {
+        vehicle,
+        index,
+      });
+    },
   }
 };
 </script>
