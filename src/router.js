@@ -31,9 +31,9 @@ const router = new Router({
       component: SignUp,
     },
     {
-      path: '/users',
-      name: 'users',
-      component: () => import(/* webpackChunkName: "users" */ './views/Users.vue'),
+      path: '/clients',
+      name: 'clients',
+      component: () => import(/* webpackChunkName: "clients" */ './views/Clients.vue'),
       meta: {
         requiresAuth: true,
       },
