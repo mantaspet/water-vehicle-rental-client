@@ -19,9 +19,6 @@ const router = new Router({
       path: '/',
       name: 'home',
       component: Home,
-      meta: {
-        requiresAuth: true,
-      }
     },
     {
       path: '/login',
@@ -40,6 +37,11 @@ const router = new Router({
       meta: {
         requiresAuth: true,
       },
+    },
+    {
+      path: '/about',
+      name: 'about',
+      component: () => import(/* webpackChunkName: "about" */ './views/About.vue'),
     }
   ],
 });
