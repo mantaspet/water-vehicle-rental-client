@@ -51,8 +51,6 @@
 </template>
 
 <script>
-import { MDCRipple } from "@material/ripple";
-import { MDCTextField } from "@material/textfield";
 import firebase from "firebase";
 
 export default {
@@ -63,13 +61,6 @@ export default {
       email: "",
       password: ""
     };
-  },
-
-  mounted() {
-    new MDCTextField(document.querySelector("#email"));
-    new MDCTextField(document.querySelector("#password"));
-    new MDCRipple(document.querySelector("#loginBtn"));
-    new MDCRipple(document.querySelector("#signupBtn"));
   },
 
   methods: {
@@ -86,12 +77,6 @@ export default {
 <style lang="scss" scoped>
 .header {
   text-align: center;
-}
-
-.mdc-text-field {
-  display: block;
-  width: 300px;
-  margin: 20px auto;
 }
 
 .button-container {

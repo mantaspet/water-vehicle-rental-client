@@ -55,8 +55,6 @@
 </template>
 
 <script>
-import { MDCTextField } from "@material/textfield";
-
 export default {
   name: "VehicleFormDialog",
 
@@ -71,12 +69,6 @@ export default {
         ? "Nauja transporto priemonė"
         : "Transporto priemonės redagavimas";
     }
-  },
-
-  mounted() {
-    new MDCTextField(document.querySelector("#brand"));
-    new MDCTextField(document.querySelector("#model"));
-    new MDCTextField(document.querySelector("#year"));
   },
 
   methods: {
