@@ -38,6 +38,7 @@
 
 <script>
 import DataTable from "../components/DataTable";
+import { MDCRipple } from "@material/ripple";
 import VehicleFormDialog from "../components/VehicleFormDialog";
 
 export default {
@@ -58,7 +59,16 @@ export default {
     this.$store.dispatch('getVehicles');
   },
 
+  mounted() {
+    const fabRipple = new MDCRipple(document.querySelector(".mdc-fab"));
+    this.$store.commit("initVehicleDialog");
+  },
+
   methods: {
+    toggleDrawer() {
+      this.$store.commit("toggleDrawer");
+    },
+
     createVehicle() {
       this.$store.commit("createVehicle");
     },

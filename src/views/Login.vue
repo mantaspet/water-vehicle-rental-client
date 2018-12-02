@@ -1,15 +1,15 @@
 <template>
-  <v-layout wrap align-center class="text-xs-center">
-    <v-flex xs12>
-      <img
-        alt="site-logo"
-        src="../assets/logo.png"
-        height="150"
-      >
-    </v-flex>
-    <v-flex xs12>
+  <div style="text-align: center">
+    <section class="header">
+      <div class="site-logo">
+        <img
+          alt="site-logo"
+          src="../assets/logo.png"
+          height="150"
+        >
+      </div>
       <h1 style="margin-bottom: 64px">VANDENS TRANSPORTO PRIEMONIŲ NUOMA</h1>
-    </v-flex>
+    </section>
 
     <form @submit.prevent="login">
       <div id="email" class="mdc-text-field mdc-text-field--box">
@@ -47,10 +47,12 @@
         >Registruotis</button>
       </div>
     </form>
-  </v-layout>
+  </div>
 </template>
 
 <script>
+import { MDCRipple } from "@material/ripple";
+import { MDCTextField } from "@material/textfield";
 import firebase from "firebase";
 
 export default {
@@ -61,6 +63,13 @@ export default {
       email: "",
       password: ""
     };
+  },
+
+  mounted() {
+    new MDCTextField(document.querySelector("#email"));
+    new MDCTextField(document.querySelector("#password"));
+    new MDCRipple(document.querySelector("#loginBtn"));
+    new MDCRipple(document.querySelector("#signupBtn"));
   },
 
   methods: {
@@ -77,6 +86,12 @@ export default {
 <style lang="scss" scoped>
 .header {
   text-align: center;
+}
+
+.mdc-text-field {
+  display: block;
+  width: 300px;
+  margin: 20px auto;
 }
 
 .button-container {

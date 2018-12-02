@@ -3,7 +3,7 @@ import router from '../router';
 
 export default {
 	state: {
-		currentUser: null,
+		currentUser: {},
 	},
 
 	getters: {
@@ -52,9 +52,8 @@ export default {
         });
 		},
 
-		logout({ commit }) {
+		logout() {
       firebase.auth().signOut().then(() => {
-				commit('storeCurrentUser', null);
         router.replace({ name: 'login' });
       });
     },

@@ -1,13 +1,14 @@
 import firebase from 'firebase';
 import { EventBus } from '../event-bus';
 import router from '../router';
+import { MDCDialog } from '@material/dialog';
 
 export default {
 	state: {
 		vehicles: [],
 		vehicle: {},
 		vehicleIndex: -1,
-		vehicleDialog: false,
+		vehicleDialog: null,
 	},
 
 	getters: {
@@ -17,9 +18,13 @@ export default {
 	},
 
 	mutations: {
+		initVehicleDialog(state) {
+			state.vehicleDialog = new MDCDialog(document.querySelector("#vehicle-dialog"));
+		},
+
 		storeUpdatedVehicle(state, vehicle) {
 			state.vehicles.splice(state.vehicleIndex, 1, vehicle);
-			state.vehicleDialog = false;
+			state.vehicleDialog.close();
 		},
 
 		storeVehicles(state, vehicles) {
@@ -29,18 +34,18 @@ export default {
 		createVehicle(state) {
 			state.vehicle = {};
 			state.vehicleIndex = -1;
-			state.vehicleDialog = true;
+			state.vehicleDialog.open();
 		},
 
 		editVehicle(state, payload) {
 			state.vehicle = JSON.parse(JSON.stringify(payload.vehicle));
 			state.vehicleIndex = payload.index;
-			state.vehicleDialog = true;
+			state.vehicleDialog.open();
 		},
 
 		storeNewVehicle(state, vehicle) {
 			state.vehicles.push(vehicle);
-			state.vehicleDialog = false;
+			state.vehicleDialog.close();
 		},
 
 		removeVehicle(state, index) {
