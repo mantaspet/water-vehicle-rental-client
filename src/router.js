@@ -21,6 +21,11 @@ const router = new Router({
       component: Vehicles,
     },
     {
+      path: '/vehicle/:id',
+      name: 'vehicle',
+      component: () => import(/* webpackChunkName: "vehicle" */ './views/Vehicle.vue'),
+    },
+    {
       path: '/login',
       name: 'login',
       component: Login,

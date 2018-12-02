@@ -1,10 +1,10 @@
 <template>
 <div class="mdc-card">
   <table>
-		<thead>
+		<thead class="mdc-typography--subtitle2">
 			<slot name="headers"></slot>
 		</thead>
-		<tbody :class="{'clickable-rows': clickableRows}">
+		<tbody :class="[{'clickable-rows': clickableRows}, 'mdc-typography--body2']">
 			<slot name="items"></slot>
 		</tbody>
 	</table>
@@ -27,7 +27,6 @@ export default {
 <style lang="scss" scoped>
 table {
 	border-collapse: collapse;
-	font-size: 0.875rem;
 }
 
 th, td {

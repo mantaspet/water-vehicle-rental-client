@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" class="mdc-typography--body1">
     <div
       v-if="$store.state.ui.progress"
       role="progressbar"
@@ -215,6 +215,10 @@ body {
   position: absolute;
 }
 
+.mdc-typography--headline4 {
+  font-size: 2rem;
+}
+
 .mdc-fab {
   position: fixed;
   bottom: 1.5rem;
@@ -230,11 +234,35 @@ body {
   position: absolute;
 }
 
+.pa-0 {
+  padding: 0px !important;
+}
+
 .pa-1 {
   padding: 4px !important;
 }
 
+.pa-2 {
+  padding: 8px !important;
+}
+
+.pa-3 {
+  padding: 12px !important;
+}
+
+.ma-0 {
+  margin: 0px !important;
+}
+
 .ma-1 {
   margin: 4px !important;
+}
+
+.ma-2 {
+  margin: 8px !important;
+}
+
+.ma-3 {
+  margin: 12px !important;
 }
 </style>

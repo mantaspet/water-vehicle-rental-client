@@ -6,15 +6,19 @@ import { MDCDialog } from '@material/dialog';
 export default {
 	state: {
 		vehicles: [],
-		vehicle: {},
-		vehicleIndex: -1,
+		selectedVehicle: {},
+		selectedVehicleIndex: -1,
 		vehicleDialog: null,
 	},
 
 	getters: {
 		vehicles(state) {
 			return state.vehicles;
-		}
+		},
+
+		vehicle(state) {
+			return state.selectedVehicle;
+		},
 	},
 
 	mutations: {
@@ -23,7 +27,7 @@ export default {
 		},
 
 		storeUpdatedVehicle(state, vehicle) {
-			state.vehicles.splice(state.vehicleIndex, 1, vehicle);
+			state.vehicles.splice(state.selectedVehicleIndex, 1, vehicle);
 			state.vehicleDialog.close();
 		},
 
@@ -32,20 +36,24 @@ export default {
 		},
 
 		createVehicle(state) {
-			state.vehicle = {};
+			state.selectedVehicle = {};
 			state.vehicleIndex = -1;
 			state.vehicleDialog.open();
 		},
 
 		editVehicle(state, payload) {
-			state.vehicle = JSON.parse(JSON.stringify(payload.vehicle));
-			state.vehicleIndex = payload.index;
+			state.selectedVehicle = JSON.parse(JSON.stringify(payload.vehicle));
+			state.selectedVehicleIndex = payload.index;
 			state.vehicleDialog.open();
 		},
 
 		storeNewVehicle(state, vehicle) {
 			state.vehicles.push(vehicle);
 			state.vehicleDialog.close();
+		},
+
+		setSelectedVehicle(state, vehicle) {
+			state.selectedVehicle = vehicle;
 		},
 
 		removeVehicle(state, index) {
@@ -71,7 +79,23 @@ export default {
 				});
 		},
 
+		getVehicle({}, id) {
+			return new Promise((resolve, reject) => {
+				firebase
+				.firestore()
+				.collection('vehicles')
+				.doc(id)
+				.get()
+				.then(doc => {
+					let vehicle = doc.data();
+					vehicle.id = id;
+					resolve(vehicle);
+				}).catch(() => reject());
+			});
+		},
+
 		saveNewVehicle({ commit }, vehicle) {
+			vehicle.reservations = [];
 			firebase
 				.firestore()
 				.collection('vehicles')

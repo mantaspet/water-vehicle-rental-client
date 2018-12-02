@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>Transporto priemonių sąrašas</h2>
+    <h1 class="mdc-typography--headline4">Transporto priemonių sąrašas</h1>
     <button class="mdc-fab mdc-fab--extended" @click="createVehicle">
       <span class="material-icons mdc-fab__icon">add</span>
       <span class="mdc-fab__label">Sukurti naują</span>
@@ -10,7 +10,7 @@
         <th v-for="header in headers" :key="header">{{ header }}</th>
       </template>
       <template slot="items">
-        <tr v-for="(vehicle, index) in $store.getters.vehicles" :key="vehicle.id">
+        <tr v-for="(vehicle, index) in $store.getters.vehicles" :key="vehicle.id" @click="viewVehicle(vehicle)">
           <td>{{ vehicle.brand }}</td>
           <td>{{ vehicle.model }}</td>
           <td>{{ vehicle.year }}</td>
@@ -18,20 +18,20 @@
             <button
               class="material-icons mdc-icon-button"
               title="Redaguoti"
-              @click="editVehicle(vehicle, index)"
+              @click.stop="editVehicle(vehicle, index)"
             >edit</button>
             <button
               class="material-icons mdc-icon-button"
               title="Trinti"
-              @click="deleteVehicle(vehicle, index)"
+              @click.stop="deleteVehicle(vehicle, index)"
             >delete</button>
           </td>
         </tr>
       </template>
     </DataTable>
     <VehicleFormDialog
-      :vehicle="$store.state.vehicles.vehicle"
-      :index="$store.state.vehicles.vehicleIndex"
+      :vehicle="$store.state.vehicles.selectedVehicle"
+      :index="$store.state.vehicles.selectedVehicleIndex"
     />
   </div>
 </template>
@@ -85,7 +85,12 @@ export default {
         vehicle,
         index,
       })
-    }
+    },
+
+    viewVehicle(vehicle) {
+      this.$store.commit('setSelectedVehicle', vehicle);
+      this.$router.push({ name: 'vehicle', params: { id: vehicle.id } });
+    },
   }
 };
 </script>

@@ -42,7 +42,9 @@ export default {
         .auth()
         .signInWithEmailAndPassword(userData.email, userData.password)
         .then(res => {
-          dispatch('getCurrentUser', res.user.uid);
+          dispatch('getCurrentUser', res.user.uid).then(() => {
+						router.replace({ name: 'home' });
+					});
         })
         .catch(err => {
           commit("hideProgress");
@@ -59,7 +61,8 @@ export default {
     },
 
 		getCurrentUser({ commit, dispatch }, userId) {
-			firebase
+			return new Promise((resolve, reject) => {
+				firebase
 				.firestore()
 				.collection('users')
 				.doc(userId)
@@ -69,7 +72,6 @@ export default {
 						if (doc.data().isActive) {
 							commit('storeCurrentUser', doc.data());
 							commit("hideProgress");
-							router.replace({ name: "home" });
 						} else {
 							commit('openSnackbar', {
 								message: 'Paskyra užblokuota',
@@ -78,13 +80,16 @@ export default {
 							dispatch('logout');
 							router.replace({ name: "login" });
 						}
+						resolve();
 					} else {
 						commit('openSnackbar', {
 							message: 'Naudotojas neegzistuoja',
 						});
 						commit("hideProgress");
+						reject();
 					}
 				});
+			});
 		}
 	}
 };

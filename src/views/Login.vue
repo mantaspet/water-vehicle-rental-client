@@ -8,7 +8,7 @@
           height="150"
         >
       </div>
-      <h1 style="margin-bottom: 64px">VANDENS TRANSPORTO PRIEMONIŲ NUOMA</h1>
+      <h1 class="mdc-typography--headline4" style="margin-bottom: 64px">VANDENS TRANSPORTO PRIEMONIŲ NUOMA</h1>
     </section>
 
     <form @submit.prevent="login">
