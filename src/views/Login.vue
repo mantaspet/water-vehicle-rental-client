@@ -1,15 +1,15 @@
 <template>
-  <div style="text-align: center">
-    <section class="header">
-      <div class="site-logo">
-        <img
-          alt="site-logo"
-          src="../assets/logo.png"
-          height="150"
-        >
-      </div>
+  <v-layout wrap align-center class="text-xs-center">
+    <v-flex xs12>
+      <img
+        alt="site-logo"
+        src="../assets/logo.png"
+        height="150"
+      >
+    </v-flex>
+    <v-flex xs12>
       <h1 style="margin-bottom: 64px">VANDENS TRANSPORTO PRIEMONIŲ NUOMA</h1>
-    </section>
+    </v-flex>
 
     <form @submit.prevent="login">
       <div id="email" class="mdc-text-field mdc-text-field--box">
@@ -47,7 +47,7 @@
         >Registruotis</button>
       </div>
     </form>
-  </div>
+  </v-layout>
 </template>
 
 <script>

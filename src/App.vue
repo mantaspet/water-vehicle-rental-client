@@ -13,7 +13,7 @@
       :action="$store.getters.snackbar.action"
       :timeout="$store.getters.snackbar.timeout"/>
     <v-content>
-      <v-container class="pa-0 mx-0" fill-height fluid>
+      <v-container class="pa-3 mx-0" fill-height fluid>
         <v-slide-y-transition mode="out-in">
           <router-view :key="$route.fullPath"/>
         </v-slide-y-transition>
@@ -35,20 +35,6 @@ export default {
     ConfirmDialog,
     Snackbar,
   },
-
-  data() {
-    return {
-
-    };
-  },
-
-  mounted() {
-
-  },
-
-  methods: {
-
-  }
 };
 </script>
 
