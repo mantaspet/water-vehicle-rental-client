@@ -1,15 +1,28 @@
 import firebase from 'firebase';
 import { EventBus } from '../event-bus';
 import router from '../router';
+import { stat } from 'fs';
 
 export default {
 	state: {
+		timeFrom: null,
+		timeTo: null,
 		reservations: [],
 	},
 
 	getters: {
 		reservations(state) {
-			return state.reservations;
+			let reservations;
+			if (state.timeFrom && state.timeTo) {
+				reservations = state.reservations.filter(reservation => reservation.time >= state.timeFrom && reservation.time <= state.timeTo);
+			} else if (state.timeFrom) {
+				reservations = state.reservations.filter(reservation => reservation.time >= state.timeFrom);
+			} else if (state.timeTo) {
+				reservations = state.reservations.filter(reservation => reservation.time <= state.timeTo);
+			} else {
+				reservations = state.reservations;
+			}
+			return reservations;
 		}
 	},
 
@@ -21,6 +34,11 @@ export default {
 		storeReservation(state, reservation) {
 			state.reservations.push(reservation);
 		},
+
+		filterReservations(state, payload) {
+			state.timeFrom = payload.timeFrom;
+			state.timeTo = payload.timeTo;
+		}
 	},
 
 	actions: {

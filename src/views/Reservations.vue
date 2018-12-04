@@ -1,6 +1,20 @@
 <template>
   <div>
-    <h1 class="mdc-typography--headline4">{{ title }}</h1>
+    <div class="header-wrapper">
+      <h1 class="mdc-typography--headline4">{{ title }}</h1>
+      <div>
+        <div id="date-from" class="mdc-text-field mdc-text-field--box">
+          <input v-model="dateFrom" type="date" class="mdc-text-field__input" @input="filterReservations">
+          <label class="mdc-floating-label" for="email-input">Data nuo</label>
+          <div class="mdc-line-ripple"></div>
+        </div>
+        <div id="date-to" class="mdc-text-field mdc-text-field--box">
+          <input v-model="dateTo" type="date" class="mdc-text-field__input" @input="filterReservations">
+          <label class="mdc-floating-label" for="email-input">Data iki</label>
+          <div class="mdc-line-ripple"></div>
+        </div>
+      </div>
+    </div>
     <DataTable :items="$store.getters.reservations">
       <template slot="headers">
         <th v-for="header in headers" :key="header">{{ header }}</th>
@@ -28,6 +42,7 @@
 import DataTable from "../components/DataTable";
 import ClientInfoDialog from "../components/ClientInfoDialog";
 import { MDCDialog } from "@material/dialog";
+import { MDCTextField } from "@material/textfield";
 
 export default {
   name: "Reservations",
@@ -41,6 +56,9 @@ export default {
     return {
       clientDialog: null,
       createdBy: {},
+      dateFrom: "",
+			dateTo: "",
+			timer: null,
       headers: ["Transporto priemonė", "Maršrutas", "Data", "Klientas"]
     };
   },
@@ -64,7 +82,9 @@ export default {
   mounted() {
     this.clientDialog = new MDCDialog(
       document.querySelector("#client-info-dialog")
-    );
+		);
+		new MDCTextField(document.querySelector("#date-from"));
+		new MDCTextField(document.querySelector("#date-to"));
   },
 
   methods: {
@@ -73,7 +93,31 @@ export default {
         this.createdBy = client;
         this.clientDialog.open();
       });
-    }
+		},
+		
+		filterReservations() {
+			clearTimeout(this.timer);
+			this.timer = setTimeout(() => {
+				const timeFrom = new Date(this.dateFrom).getTime();
+				const timeTo = new Date(this.dateTo).getTime();
+				this.$store.commit('filterReservations', {
+					timeFrom,
+					timeTo,
+				});
+			}, 500);
+		},
   }
 };
 </script>
+
+<style lang="scss" scoped>
+.header-wrapper {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.mdc-text-field {
+	margin-left: 12px;
+}
+</style>
