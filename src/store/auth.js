@@ -54,7 +54,8 @@ export default {
         });
 		},
 
-		logout() {
+		logout({ commit }) {
+			commit('storeCurrentUser', {});
       firebase.auth().signOut().then(() => {
         router.replace({ name: 'login' });
       });
@@ -72,6 +73,7 @@ export default {
 						if (doc.data().isActive) {
 							commit('storeCurrentUser', doc.data());
 							commit("hideProgress");
+							resolve();
 						} else {
 							commit('openSnackbar', {
 								message: 'Paskyra užblokuota',
@@ -79,8 +81,8 @@ export default {
 							commit("hideProgress");
 							dispatch('logout');
 							router.replace({ name: "login" });
+							reject();
 						}
-						resolve();
 					} else {
 						commit('openSnackbar', {
 							message: 'Naudotojas neegzistuoja',

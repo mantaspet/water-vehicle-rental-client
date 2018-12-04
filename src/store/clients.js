@@ -40,6 +40,19 @@ export default {
         });
 		},
 
+		getClient({}, id) {
+			return new Promise((resolve) => {
+				firebase
+        .firestore()
+				.collection('users')
+				.doc(id)
+        .get()
+        .then(res => {
+					resolve(res.data());
+        });
+			});
+		},
+
 		createClient({ commit }, client) {
 			firebase
         .firestore()

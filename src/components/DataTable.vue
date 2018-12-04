@@ -1,6 +1,6 @@
 <template>
 <div class="mdc-card">
-  <table>
+  <table v-if="items.length">
 		<thead class="mdc-typography--subtitle2">
 			<slot name="headers"></slot>
 		</thead>
@@ -8,6 +8,7 @@
 			<slot name="items"></slot>
 		</tbody>
 	</table>
+	<h3 v-else class="mdc-typography--body1">Įrašų nėra</h3>
 </div>
 </template>
 
@@ -19,12 +20,17 @@ export default {
 		clickableRows: {
 			type: Boolean,
 			default: false,
-		}
+		},
+		items: Array,
 	},
 }
 </script>
 
 <style lang="scss" scoped>
+h3 {
+	padding-left: 12px;
+}
+
 table {
 	border-collapse: collapse;
 }

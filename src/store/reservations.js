@@ -43,7 +43,6 @@ export default {
 
 		getMyReservations({ commit, getters }) {
 			const currentUserId = getters.currentUser.userId;
-			console.log(currentUserId);
 			firebase
         .firestore()
 				.collection('reservations')

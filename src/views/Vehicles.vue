@@ -5,7 +5,7 @@
       <span class="material-icons mdc-fab__icon">add</span>
       <span class="mdc-fab__label">Sukurti naują</span>
     </button>
-    <DataTable clickable-rows>
+    <DataTable :items="$store.getters.vehicles" clickable-rows>
       <template slot="headers">
         <th v-for="header in headers" :key="header">{{ header }}</th>
       </template>
