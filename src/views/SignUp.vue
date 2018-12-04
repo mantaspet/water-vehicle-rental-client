@@ -1,61 +1,80 @@
 <template>
-  <div>
+  <div style="text-align: center">
     <section class="header">
-      <svg
-        class="shrine-logo"
-        xmlns="http://www.w3.org/2000/svg"
-        xmlns:xlink="http://www.w3.org/1999/xlink"
-        version="1.1"
-        id="Layer_1"
-        x="0px"
-        y="0px"
-        width="48px"
-        height="48px"
-        viewBox="0 0 24 24"
-        enable-background="new 0 0 24 24"
-        xml:space="preserve"
-        fill="#000000"
-      >
-        <g id="XMLID_2_">
-          <g id="XMLID_4_">
-            <path
-              id="XMLID_5_"
-              d="M17,2H7L2,6.62L12,22L22,6.62L17,2z M16.5,3.58l3.16,2.92H16.5V3.58z M7.59,3.5H15v3H4.34L7.59,3.5z     M11.25,18.1L7.94,13h3.31V18.1z M11.25,11.5H6.96L4.69,8h6.56V11.5z M16.5,12.32 M12.75,18.09V8h6.56L12.75,18.09z"
-            ></path>
-          </g>
-          <rect id="XMLID_1_" fill="none" width="24" height="24"></rect>
-        </g>
-      </svg>
-      <h1>SHRINE</h1>
+      <div class="site-logo">
+        <img alt="site-logo" src="../assets/logo.png" height="150">
+      </div>
+      <h1 class="mdc-typography--headline4" style="margin-bottom: 32px">VANDENS TRANSPORTO PRIEMONIŲ NUOMA</h1>
     </section>
 
-    <form>
-      <div class="mdc-text-field mdc-text-field--box username">
-        <input
-          type="text"
-          class="mdc-text-field__input"
-          id="username-input"
-          name="username"
-          required
-        >
-        <label class="mdc-floating-label" for="username-input">Username</label>
-        <div class="mdc-line-ripple"></div>
-      </div>
-      <div class="mdc-text-field mdc-text-field--box password">
-        <input
-          type="password"
-          class="mdc-text-field__input"
-          id="password-input"
-          name="password"
-          required
-          minlength="8"
-        >
-        <label class="mdc-floating-label" for="password-input">Password</label>
-        <div class="mdc-line-ripple"></div>
+    <form @submit.prevent="signUp">
+      <div id="form-wrapper">
+        <div id="first-name" class="mdc-text-field mdc-text-field--box">
+          <input v-model="firstName" type="text" class="mdc-text-field__input" required>
+          <label class="mdc-floating-label" for="email-input">Vardas</label>
+          <div class="mdc-line-ripple"></div>
+        </div>
+
+        <div id="last-name" class="mdc-text-field mdc-text-field--box">
+          <input v-model="lastName" type="text" class="mdc-text-field__input" required>
+          <label class="mdc-floating-label" for="email-input">Pavardė</label>
+          <div class="mdc-line-ripple"></div>
+        </div>
+        <br>
+        <div id="email" class="mdc-text-field mdc-text-field--box">
+          <input v-model="email" type="email" class="mdc-text-field__input" required email>
+          <label class="mdc-floating-label" for="email-input">El. paštas</label>
+          <div class="mdc-line-ripple"></div>
+        </div>
+
+        <div id="dob" class="mdc-text-field mdc-text-field--box">
+          <input v-model="dob" type="date" class="mdc-text-field__input" required>
+          <label class="mdc-floating-label" for="email-input">Gimimo data</label>
+          <div class="mdc-line-ripple"></div>
+        </div>
+        <br>
+        <div id="account-no" class="mdc-text-field mdc-text-field--box" style="width: 612px">
+          <input v-model="accountNo" type="text" class="mdc-text-field__input" required>
+          <label class="mdc-floating-label" for="email-input">Sąskaitos nr.</label>
+          <div class="mdc-line-ripple"></div>
+        </div>
+        <br>
+        <div id="password" class="mdc-text-field mdc-text-field--box">
+          <input
+            v-model="password"
+            type="password"
+            class="mdc-text-field__input"
+            required
+            minlength="8"
+          >
+          <label class="mdc-floating-label" for="password-input">Slaptažodis</label>
+          <div class="mdc-line-ripple"></div>
+        </div>
+        <div id="repeat-password" class="mdc-text-field mdc-text-field--box">
+          <input
+            v-model="repeatPassword"
+            type="password"
+            class="mdc-text-field__input"
+            required
+            minlength="8"
+          >
+          <label class="mdc-floating-label" for="password-input">Pakartokite slapažodį</label>
+          <div class="mdc-line-ripple"></div>
+        </div>
       </div>
       <div class="button-container">
-        <button type="button" class="mdc-button cancel">Cancel</button>
-        <button class="mdc-button mdc-button--raised next">Next</button>
+        <button
+          type="submit"
+          id="login-btn"
+          class="mdc-button mdc-button--raised signup"
+        >Registruotis</button>
+        <p style="margin-top: 48px">Jau esate užsiregistravę?</p>
+        <button
+          type="button"
+          id="signup-btn"
+          class="mdc-button mdc-button--raised login"
+          @click="$router.push({ name: 'login' })"
+        >Prisijungti</button>
       </div>
     </form>
   </div>
@@ -64,14 +83,55 @@
 <script>
 import { MDCRipple } from "@material/ripple";
 import { MDCTextField } from "@material/textfield";
+import firebase from "firebase";
 
 export default {
-  mounted() {
-    new MDCTextField(document.querySelector(".username"));
-    new MDCTextField(document.querySelector(".password"));
+  name: "SignUp",
 
-    new MDCRipple(document.querySelector(".cancel"));
-    new MDCRipple(document.querySelector(".next"));
+  data() {
+    return {
+      email: "",
+      firstName: "",
+      lastName: "",
+      dob: "",
+      accountNo: "",
+      password: "",
+      repeatPassword: ""
+    };
+  },
+
+  mounted() {
+    new MDCTextField(document.querySelector("#email"));
+    new MDCTextField(document.querySelector("#first-name"));
+    new MDCTextField(document.querySelector("#last-name"));
+    new MDCTextField(document.querySelector("#dob"));
+    new MDCTextField(document.querySelector("#account-no"));
+    new MDCTextField(document.querySelector("#password"));
+    new MDCTextField(document.querySelector("#repeat-password"));
+    new MDCRipple(document.querySelector("#login-btn"));
+    new MDCRipple(document.querySelector("#signup-btn"));
+  },
+
+  methods: {
+    signUp() {
+      if (this.password === this.repeatPassword) {
+        this.$store.dispatch('signUp', {
+          email: this.email,
+          password: this.password,
+          firstName: this.firstName,
+          lastName: this.lastName,
+          dob: this.dob,
+          accountNo: this.accountNo,
+          password: this.password,
+          role: "client",
+          isActive: true,
+        });
+      } else {
+        this.$store.commit("openSnackbar", {
+          message: "Slaptažodžiai nesutampa"
+        });
+      }
+    },
   }
 };
 </script>
@@ -81,28 +141,25 @@ export default {
   text-align: center;
 }
 
-.shrine-logo {
-  width: 150px;
-  height: 150px;
-  padding-top: 80px;
-  fill: currentColor;
+#form-wrapper {
+  width: 800px;
+  margin: 0 auto;
+  text-align: center;
 }
 
-.username,
-.password {
-  display: block;
+.mdc-text-field {
+  display: inline-block;
   width: 300px;
-  margin: 20px auto;
+  margin: 20px 6px;
 }
 
 .button-container {
-  display: flex;
-  justify-content: flex-end;
-  width: 300px;
+  text-align: center;
+  width: 612px;
   margin: auto;
 }
 
 .button-container button {
-  margin: 3px;
+  width: 100%;
 }
 </style>
