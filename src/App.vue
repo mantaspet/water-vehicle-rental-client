@@ -182,6 +182,7 @@ export default {
 @import "@material/dialog/mdc-dialog";
 @import "@material/fab/mdc-fab";
 @import "@material/grid-list/mdc-grid-list";
+@import "@material/select/mdc-select";
 
 body {
   height: 100vh;

@@ -1,5 +1,5 @@
 <template>
-<div class="mdc-card" style="max-width: 800px">
+<div class="mdc-card">
 	<h2 class="ma-3 mdc-typography--headline6">
 		{{ title }}
 		<span style="float: right">
