@@ -27,8 +27,12 @@ export default {
 		},
 
 		storeUpdatedVehicle(state, vehicle) {
-			state.vehicles.splice(state.selectedVehicleIndex, 1, vehicle);
-			state.vehicleDialog.close();
+			if (state.selectedVehicleIndex >= 0) {
+				state.vehicles.splice(state.selectedVehicleIndex, 1, vehicle);
+			}
+			if (state.vehicleDialog) {
+				state.vehicleDialog.close();
+			}
 		},
 
 		storeVehicles(state, vehicles) {
@@ -110,20 +114,20 @@ export default {
 		},
 
 		updateVehicle({ commit }, vehicle) {
-			const id = vehicle.id;
-			delete vehicle.id;
-			firebase
-				.firestore()
-				.collection('vehicles')
-				.doc(id)
-				.update(vehicle)
-				.then(() => {
-					vehicle.id = id;
-					commit('storeUpdatedVehicle', vehicle);
-					commit('openSnackbar', {
-						message: 'Transporto priemonė atnaujinta',
+			return new Promise((resolve) => {
+				const id = vehicle.id;
+				delete vehicle.id;
+				firebase
+					.firestore()
+					.collection('vehicles')
+					.doc(id)
+					.update(vehicle)
+					.then(() => {
+						vehicle.id = id;
+						resolve();
+						commit('storeUpdatedVehicle', vehicle);
 					});
-				});
+			})
 		},
 
 		deleteVehicle({ commit }, payload) {

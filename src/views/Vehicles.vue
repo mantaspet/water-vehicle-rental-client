@@ -14,6 +14,7 @@
           <td>{{ vehicle.brand }}</td>
           <td>{{ vehicle.model }}</td>
           <td>{{ vehicle.year }}</td>
+          <td>{{ vehicle.status }}</td>
           <td>
             <button
               class="material-icons mdc-icon-button"
@@ -51,7 +52,7 @@ export default {
 
   data() {
     return {
-      headers: ["Markė", "Modelis", "Metai", "Veiksmai"]
+      headers: ["Markė", "Modelis", "Metai", "Būsena", "Veiksmai"]
     };
   },
 

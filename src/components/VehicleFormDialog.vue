@@ -38,6 +38,18 @@
               <label class="mdc-floating-label" for="year-input">Metai</label>
               <div class="mdc-line-ripple"></div>
             </div>
+            <div id="status" class="mdc-select">
+              <i class="mdc-select__dropdown-icon"></i>
+              <select v-model="vehicle.status" class="mdc-select__native-control">
+                <option
+                  v-for="status in availableStatuses"
+                  :key="status"
+                  :value="status"
+                >{{ status }}</option>
+              </select>
+              <label class="mdc-floating-label">Būsena</label>
+              <div class="mdc-line-ripple"></div>
+            </div>
           </div>
           <footer class="mdc-dialog__actions">
             <button
@@ -56,6 +68,7 @@
 
 <script>
 import { MDCTextField } from "@material/textfield";
+import { MDCSelect } from "@material/select";
 
 export default {
   name: "VehicleFormDialog",
@@ -63,6 +76,12 @@ export default {
   props: {
     vehicle: Object,
     index: Number
+  },
+
+  data() {
+    return {
+      availableStatuses: ['Paruošta naudojimui', 'Lauka apžiūros'],
+    }
   },
 
   computed: {
@@ -77,12 +96,17 @@ export default {
     new MDCTextField(document.querySelector("#brand"));
     new MDCTextField(document.querySelector("#model"));
     new MDCTextField(document.querySelector("#year"));
+    new MDCSelect(document.querySelector("#status"));
   },
 
   methods: {
     save() {
       if (this.index > -1) {
-        this.$store.dispatch("updateVehicle", this.vehicle);
+        this.$store.dispatch("updateVehicle", this.vehicle).then(() => {
+          this.$store.commit('openSnackbar', {
+						message: 'Transporto priemonė atnaujinta',
+					});
+        });
       } else {
         this.$store.dispatch("saveNewVehicle", this.vehicle);
       }
@@ -92,7 +116,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.mdc-text-field {
+.mdc-text-field, .mdc-select {
   margin: 8px auto;
   width: 100%;
 }

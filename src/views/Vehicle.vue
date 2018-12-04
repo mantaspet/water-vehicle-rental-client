@@ -3,7 +3,7 @@
     <template v-if="vehicle.id">
       <h1 class="mdc-typography--headline4">
         <div>Pasirinkta transporto priemonė:</div>
-        <div>{{ vehicle.brand }} {{ vehicle.model }}</div>
+        <div>{{ vehicle.brand }} {{ vehicle.model }} ({{ vehicle.year }})</div>
       </h1>
       <TimeTable
         :selectedTime="selectedTimeString"
@@ -90,9 +90,17 @@ export default {
 
   methods: {
     createReservation() {
-      console.log(this.selectedTime);
-      console.log(new Date(this.selectedTime));
-      console.log(this.selectedRoute);
+      const newReservation = {
+        time: this.selectedTime,
+        route: this.selectedRoute,
+        vehicle: `${this.vehicle.brand} ${this.vehicle.model} (${this.vehicle.year})`,
+        vehicleId: this.vehicle.id,
+        userId: this.$store.getters.currentUser.userId,
+      };
+      this.$store.dispatch('createReservation', newReservation).then(() => {
+        this.vehicle.reservations.push(this.selectedTime);
+        this.$store.dispatch('updateVehicle', this.vehicle);
+      });
     },
 
     selectRoute(event) {

@@ -44,6 +44,14 @@ const router = new Router({
       },
     },
     {
+      path: '/reservations',
+      name: 'reservations',
+      component: () => import(/* webpackChunkName: "reservations" */ './views/Reservations.vue'),
+      meta: {
+        requiresAuth: true,
+      },
+    },
+    {
       path: '/about',
       name: 'about',
       component: () => import(/* webpackChunkName: "about" */ './views/About.vue'),
