@@ -57,8 +57,9 @@ export default {
 				actionText: payload.actionText ? payload.actionText : '',
 				actionHandler: payload.actionHandler ? payload.actionHandler : null
 			};
-
-			state.snackbar.show(dataObj);
+			if (state.snackbar) {
+				state.snackbar.show(dataObj);
+			}
 		},
 
 		showProgress(state) {

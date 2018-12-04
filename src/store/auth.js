@@ -3,6 +3,7 @@ import router from '../router';
 
 export default {
 	state: {
+		authApp: null,
 		currentUser: {},
 	},
 
@@ -19,6 +20,36 @@ export default {
 	},
 
 	actions: {
+		// initalizing another firebase instance, because signing up the user instantly switches current user to it
+		createUser({ state, commit, dispatch }, employee) {
+			if (!state.authApp) {
+				const config = {
+					apiKey: process.env.VUE_APP_FIREBASE_API_KEY,
+					authDomain: process.env.VUE_APP_FIREBASE_AUTH_DOMAIN,
+					databaseURL: process.env.VUE_APP_FIREBASE_DATABASE_URL,
+					projectId: process.env.VUE_APP_FIREBASE_PROJECT_ID,
+					storageBucket: process.env.VUE_APP_FIREBASE_STORAGE_BUCKET,
+					messagingSenderId: process.env.VUE_APP_FIREBASE_MESSAGING_SENDER_ID,
+				};
+				state.authApp = firebase.initializeApp(config, "authApp");
+			}
+
+			state.authApp
+				.auth()
+				.createUserWithEmailAndPassword(employee.email, employee.password)
+				.then(res => {
+					employee.userId = res.user.uid;
+					delete employee.password;
+					dispatch('createEmployee', employee);
+					state.authApp.auth().signOut();
+				})
+				.catch(err => {
+					commit("openSnackbar", {
+						message: err.message
+					});
+				});
+		},
+
 		signUp({ commit, dispatch }, client) {
 			commit("showProgress");
 			firebase

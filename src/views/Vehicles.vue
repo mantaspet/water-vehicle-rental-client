@@ -66,10 +66,6 @@ export default {
   },
 
   methods: {
-    toggleDrawer() {
-      this.$store.commit("toggleDrawer");
-    },
-
     createVehicle() {
       this.$store.commit("createVehicle");
     },

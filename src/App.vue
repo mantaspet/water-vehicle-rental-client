@@ -113,6 +113,7 @@ export default {
         { text: "Transporto priemonės", route: "/", icon: "home" },
         { text: "Rezervacijos", route: "/reservations", icon: "event" },
         { text: "Klientai", route: "/clients", icon: "person" },
+        { text: "Darbuotojai", route: "/employees", icon: "build" },
         { text: "Apie įmonę", route: "/about", icon: "description" }
       ]
     };
