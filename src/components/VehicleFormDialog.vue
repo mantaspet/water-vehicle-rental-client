@@ -13,7 +13,10 @@
                 id="brand-input"
                 required
               >
-              <label class="mdc-floating-label" for="brand-input">Markė</label>
+              <label
+                :class="['mdc-floating-label', { 'mdc-floating-label--float-above': vehicle.brand }]"
+                for="brand-input"
+              >Markė</label>
               <div class="mdc-line-ripple"></div>
             </div>
             <div id="model" class="mdc-text-field mdc-text-field--box">
@@ -24,7 +27,11 @@
                 id="model-input"
                 required
               >
-              <label class="mdc-floating-label" for="model-input">Modelis</label>
+              <label
+                :class="['mdc-floating-label', { 'mdc-floating-label--float-above': vehicle.model }]"
+                class="mdc-floating-label"
+                for="model-input"
+              >Modelis</label>
               <div class="mdc-line-ripple"></div>
             </div>
             <div id="year" class="mdc-text-field mdc-text-field--box">
@@ -35,19 +42,26 @@
                 id="year-input"
                 required
               >
-              <label class="mdc-floating-label" for="year-input">Metai</label>
+              <label
+                :class="['mdc-floating-label', { 'mdc-floating-label--float-above': vehicle.year }]"
+                class="mdc-floating-label"
+                for="year-input"
+              >Metai</label>
               <div class="mdc-line-ripple"></div>
             </div>
             <div id="status" class="mdc-select">
               <i class="mdc-select__dropdown-icon"></i>
-              <select v-model="vehicle.status" class="mdc-select__native-control">
+              <select v-model="vehicle.status" class="mdc-select__native-control" required>
                 <option
                   v-for="status in availableStatuses"
                   :key="status"
                   :value="status"
                 >{{ status }}</option>
               </select>
-              <label class="mdc-floating-label">Būsena</label>
+              <label
+                :class="['mdc-floating-label', { 'mdc-floating-label--float-above': vehicle.status }]"
+                class="mdc-floating-label"
+              >Būsena</label>
               <div class="mdc-line-ripple"></div>
             </div>
           </div>
@@ -80,8 +94,8 @@ export default {
 
   data() {
     return {
-      availableStatuses: ['Paruošta naudojimui', 'Lauka apžiūros'],
-    }
+      availableStatuses: ["Paruošta naudojimui", "Lauka apžiūros"]
+    };
   },
 
   computed: {
@@ -103,9 +117,9 @@ export default {
     save() {
       if (this.index > -1) {
         this.$store.dispatch("updateVehicle", this.vehicle).then(() => {
-          this.$store.commit('openSnackbar', {
-						message: 'Transporto priemonė atnaujinta',
-					});
+          this.$store.commit("openSnackbar", {
+            message: "Transporto priemonė atnaujinta"
+          });
         });
       } else {
         this.$store.dispatch("saveNewVehicle", this.vehicle);
@@ -116,7 +130,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.mdc-text-field, .mdc-select {
+.mdc-text-field,
+.mdc-select {
   margin: 8px auto;
   width: 100%;
 }

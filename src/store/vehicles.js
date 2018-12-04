@@ -40,8 +40,10 @@ export default {
 		},
 
 		createVehicle(state) {
-			state.selectedVehicle = {};
-			state.vehicleIndex = -1;
+			state.selectedVehicle = {
+				status: 'Paruošta naudojimui'
+			};
+			state.selectedVehicleIndex = -1;
 			state.vehicleDialog.open();
 		},
 

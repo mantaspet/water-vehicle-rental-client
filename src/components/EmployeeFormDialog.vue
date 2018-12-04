@@ -13,7 +13,7 @@
                 id="first-name-input"
                 required
               >
-              <label class="mdc-floating-label" for="first-name-input">Vardas</label>
+              <label :class="['mdc-floating-label', { 'mdc-floating-label--float-above': employee.firstName }]" for="first-name-input">Vardas</label>
               <div class="mdc-line-ripple"></div>
             </div>
             <div id="last-name" class="mdc-text-field mdc-text-field--box">
@@ -24,7 +24,7 @@
                 id="last-name-input"
                 required
               >
-              <label class="mdc-floating-label" for="last-name-input">Pavardė</label>
+              <label :class="['mdc-floating-label', { 'mdc-floating-label--float-above': employee.lastName }]" for="last-name-input">Pavardė</label>
               <div class="mdc-line-ripple"></div>
             </div>
             <div v-if="index === -1" id="email" class="mdc-text-field mdc-text-field--box">
@@ -35,7 +35,7 @@
                 id="email-input"
                 required
               >
-              <label class="mdc-floating-label" for="email-input">El. paštas</label>
+              <label :class="['mdc-floating-label', { 'mdc-floating-label--float-above': employee.email }]" for="email-input">El. paštas</label>
               <div class="mdc-line-ripple"></div>
             </div>
             <div id="time-card-no" class="mdc-text-field mdc-text-field--box">
@@ -46,7 +46,7 @@
                 id="time-card-no-input"
                 required
               >
-              <label class="mdc-floating-label" for="time-card-no-input">Tabelio nr.</label>
+              <label :class="['mdc-floating-label', { 'mdc-floating-label--float-above': employee.timeCardNo }]" for="time-card-no-input">Tabelio nr.</label>
               <div class="mdc-line-ripple"></div>
             </div>
             <div id="nin" class="mdc-text-field mdc-text-field--box">
@@ -57,7 +57,7 @@
                 id="nin-input"
                 required
               >
-              <label class="mdc-floating-label" for="nin-input">Asmens kodas</label>
+              <label :class="['mdc-floating-label', { 'mdc-floating-label--float-above': employee.nin }]" for="nin-input">Asmens kodas</label>
               <div class="mdc-line-ripple"></div>
             </div>
 						<div v-if="index === -1" id="password" class="mdc-text-field mdc-text-field--box">
@@ -68,7 +68,7 @@
                 id="password-input"
                 required
               >
-              <label class="mdc-floating-label" for="password-input">Slaptažodis</label>
+              <label :class="['mdc-floating-label', { 'mdc-floating-label--float-above': employee.password }]" for="password-input">Slaptažodis</label>
               <div class="mdc-line-ripple"></div>
             </div>
 						<div v-if="index === -1" id="repeat-password" class="mdc-text-field mdc-text-field--box">
@@ -79,7 +79,7 @@
                 id="repeat-password-input"
                 required
               >
-              <label class="mdc-floating-label" for="repeat-password-input">Pakartokite slaptažodį</label>
+              <label :class="['mdc-floating-label', { 'mdc-floating-label--float-above': employee.repeatPassword }]" for="repeat-password-input">Pakartokite slaptažodį</label>
               <div class="mdc-line-ripple"></div>
             </div>
           </div>

@@ -41,7 +41,7 @@ export default {
 
 		createEmployee(state) {
 			state.selectedEmployee = {};
-			state.employeeIndex = -1;
+			state.selectedEmployeeIndex = -1;
 			state.employeeDialog.open();
 		},
 

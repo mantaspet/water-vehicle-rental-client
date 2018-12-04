@@ -11,19 +11,22 @@
       </template>
       <template slot="items">
         <tr v-for="(employee, index) in $store.getters.employees" :key="employee.id">
-          <td>{{ employee.firstName }} {{ employee.lastName }} <span v-if="!employee.isActive" class="alert-text">(užblokuotas)</span></td>
+          <td>
+            {{ employee.firstName }} {{ employee.lastName }}
+            <span v-if="!employee.isActive" class="alert-text">(užblokuotas)</span>
+          </td>
           <td>{{ employee.email }}</td>
           <td>{{ employee.timeCardNo }}</td>
           <td>{{ employee.nin }}</td>
           <td>
             <button
-							v-if="employee.isActive"
+              v-if="employee.isActive"
               class="material-icons mdc-icon-button"
               title="Redaguoti"
               @click.stop="editEmployee(employee, index)"
             >edit</button>
             <button
-							v-if="employee.isActive"
+              v-if="employee.isActive"
               class="material-icons mdc-icon-button"
               title="Blokuoti"
               @click.stop="suspendEmployee(employee, index)"
@@ -49,17 +52,23 @@ export default {
 
   components: {
     DataTable,
-    EmployeeFormDialog,
+    EmployeeFormDialog
   },
 
   data() {
     return {
-      headers: ["Vardas pavardė", "El. paštas", "Tabelio nr.", "Asmens kodas", "Veiksmai"]
+      headers: [
+        "Vardas pavardė",
+        "El. paštas",
+        "Tabelio nr.",
+        "Asmens kodas",
+        "Veiksmai"
+      ]
     };
   },
 
   created() {
-    this.$store.dispatch('getEmployees');
+    this.$store.dispatch("getEmployees");
   },
 
   mounted() {
@@ -75,16 +84,16 @@ export default {
     editEmployee(employee, index) {
       this.$store.commit("editEmployee", {
         employee,
-        index,
+        index
       });
     },
 
     suspendEmployee(employee, index) {
-      this.$store.dispatch('suspendEmployee', {
+      this.$store.dispatch("suspendEmployee", {
         employee,
-        index,
-      })
-    },
+        index
+      });
+    }
   }
 };
 </script>
