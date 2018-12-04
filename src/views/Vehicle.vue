@@ -122,14 +122,7 @@ export default {
 
     selectTime(time) {
       if (!this.vehicle.reservations.includes(time)) {
-        const date = new Date(time);
-        const timezoneOffset = date.getTimezoneOffset();
-        const selectedDate = date.toISOString().slice(0, 10);
-        const selectedWeekday = this.weekdayNames[date.getDay()].long;
-        const selectedTime = new Date(date.getTime() - timezoneOffset * 60000)
-          .toISOString()
-          .slice(11, 16);
-        this.selectedTimeString = `${selectedDate} (${selectedWeekday}) ${selectedTime}`;
+        this.selectedTimeString = this.$getFormattedDate(time);
         this.selectedTime = time;
       }
     },

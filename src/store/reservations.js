@@ -28,29 +28,36 @@ export default {
 			firebase
         .firestore()
 				.collection('reservations')
-				.where('role', '==', 'client')
         .get()
         .then(res => {
-					const clients = [];
+					let reservation;
+					const reservations = [];
           res.forEach(doc => {
-            clients.push(doc.data());
+						reservation = doc.data();
+						reservation.id = doc.id;
+            reservations.push(reservation);
 					});
-					commit('storeClients', clients);
+					commit('storeReservations', reservations);
         });
 		},
 
-		getMyReservations({ commit }) {
+		getMyReservations({ commit, getters }) {
+			const currentUserId = getters.currentUser.userId;
+			console.log(currentUserId);
 			firebase
         .firestore()
 				.collection('reservations')
-				.where('role', '==', 'client')
+				.where('userId', '==', currentUserId)
         .get()
         .then(res => {
-					const clients = [];
+					let reservation;
+					const reservations = [];
           res.forEach(doc => {
-            clients.push(doc.data());
+            reservation = doc.data();
+						reservation.id = doc.id;
+            reservations.push(reservation);
 					});
-					commit('storeClients', clients);
+					commit('storeReservations', reservations);
         });
 		},
 

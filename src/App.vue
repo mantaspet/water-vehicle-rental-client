@@ -111,6 +111,7 @@ export default {
       hideDrawerIn: ["login", "signup"],
       navigationItems: [
         { text: "Transporto priemonės", route: "/", icon: "home" },
+        { text: "Rezervacijos", route: "/reservations", icon: "event" },
         { text: "Klientai", route: "/clients", icon: "person" },
         { text: "Apie įmonę", route: "/about", icon: "description" }
       ]
