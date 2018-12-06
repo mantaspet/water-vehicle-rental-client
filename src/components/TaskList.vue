@@ -1,6 +1,6 @@
 <template>
   <div class="mdc-card">
-    <ul class="mdc-list mdc-list--two-line" role="group" aria-label="List with checkbox items">
+    <ul v-show="tasks.length" class="mdc-list mdc-list--two-line" role="group" aria-label="List with checkbox items">
       <template v-for="(task, index) of tasks">
         <li
           :key="task.id"
@@ -43,6 +43,7 @@
         ></li>
       </template>
     </ul>
+    <h3 v-if="!tasks.length" class="mdc-typography--body1">Įrašų nėra</h3>
   </div>
 </template>
 
@@ -75,6 +76,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+h3 {
+	padding-left: 12px;
+}
+
 .mdc-list {
   cursor: pointer;
 }

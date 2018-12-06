@@ -2,13 +2,33 @@ import firebase from 'firebase';
 
 export default {
 	state: {
+		timeFrom: null,
+		timeTo: null,
 		tasks: [],
 	},
 
 	getters: {
 		tasks(state) {
-			return state.tasks.sort((task, nextTask) => {
-				return task.isCompleted - nextTask.isCompleted;
+			let tasks;
+			if (state.timeFrom && state.timeTo) {
+				tasks = state.tasks.filter(task => task.time >= state.timeFrom && task.time <= state.timeTo);
+			} else if (state.timeFrom) {
+				tasks = state.tasks.filter(task => task.time >= state.timeFrom);
+			} else if (state.timeTo) {
+				tasks = state.tasks.filter(task => task.time <= state.timeTo);
+			} else {
+				tasks = state.tasks;
+			}
+			return tasks.sort((task, nextTask) => {
+				if (task.isCompleted && !nextTask.isCompleted) {
+					return 1;
+				} else if (!task.isCompleted && nextTask.isCompleted) {
+					return -1;
+				} else if (task.time > nextTask.time) {
+					return 1;
+				} else {
+					return -1;
+				}
 			});
 		},
 	},
@@ -26,6 +46,11 @@ export default {
 		storeNewTask(state, task) {
 			state.tasks.push(task);
 		},
+
+		filterTasks(state, payload) {
+			state.timeFrom = payload.timeFrom;
+			state.timeTo = payload.timeTo;
+		},
 	},
 
 	actions: {
@@ -33,6 +58,24 @@ export default {
 			firebase
 				.firestore()
 				.collection('tasks')
+				.get()
+				.then(res => {
+					let task;
+					const tasks = [];
+					res.forEach(doc => {
+						task = doc.data();
+						task.id = doc.id;
+						tasks.push(task);
+					});
+					commit('storeTasks', tasks);
+				});
+		},
+
+		getEmployeeTasks({ commit }, userId) {
+			firebase
+				.firestore()
+				.collection('tasks')
+				.where('closedBy', '==', userId)
 				.get()
 				.then(res => {
 					let task;

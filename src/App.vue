@@ -207,6 +207,12 @@ body {
   margin: 16px;
 }
 
+.header-wrapper {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
 .alert-text {
   font-weight: bold;
   color: red;

@@ -27,6 +27,15 @@ Vue.prototype.$getFormattedDate = function(time) {
     .slice(11, 16);
   return `${selectedDate} (${selectedWeekday}) ${selectedTime}`;
 }
+
+Vue.prototype.$userRole = function(allowedRoles) {
+  if (typeof allowedRoles === 'object') {
+    return allowedRoles.includes(store.getters.currentUser.role);
+  } else {
+    return allowedRoles === store.getters.currentUser.role;
+  }
+}
+
 initFirebase();
 
 let app;
