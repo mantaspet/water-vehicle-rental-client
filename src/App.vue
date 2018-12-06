@@ -19,8 +19,8 @@
         <div style="text-align: center; margin: 16px">
           <img
             alt="site-logo"
-            src="./assets/logo.png"
-            height="100"
+            src="./assets/logo-inverted.png"
+            height="80  "
             style="cursor: pointer"
             @click="$router.push({ name: 'home' })"
           >
@@ -164,16 +164,16 @@ export default {
 
 
 <style lang="scss">
-$mdc-theme-primary: #F44336;
+$mdc-theme-primary: #ff1744;
 // $mdc-theme-on-primary: #442C2E;
-$mdc-theme-secondary: #F44336;
+$mdc-theme-secondary: #ff1744;
 // $mdc-drawer-surface-fill-color: #EF5350;
 // $mdc-drawer-divider-color: white;
 // $mdc-theme-on-secondary: #442C2E;
 // $mdc-theme-surface: #F44336;
-// $mdc-theme-on-surface: #FFFFFF;
-// $mdc-theme-background: #FFFFFF;
-// $mdc-theme-on-background: #FFFFFF;
+// $mdc-theme-on-surface: #ffd54f;
+$mdc-theme-background: #FFFFFF;
+$mdc-theme-on-background: #000000;
 // $mdc-theme-icon: #F44336;
 
 @import "@material/button/mdc-button";
@@ -207,6 +207,36 @@ body {
   @include mdc-image-list-masonry-columns(4);
 
   overflow: auto;
+}
+
+.router-link-exact-active {
+  color: #ffd54f !important;
+  background: rgba(255, 213, 79, 0.2) !important;
+}
+
+.router-link-exact-active i {
+  color: #ffd54f !important;
+}
+
+.mdc-icon-button {
+  @include mdc-icon-button-ink-color($mdc-theme-primary);
+}
+
+.mdc-card__action {
+  color: $mdc-theme-primary !important;
+}
+
+.mdc-drawer {
+  // @include mdc-drawer-surface-fill-color($mdc-theme-primary);
+  @include mdc-drawer-item-text-ink-color($mdc-theme-on-background);
+  @include mdc-drawer-item-icon-ink-color($mdc-theme-on-background);
+  @include mdc-drawer-item-activated-icon-ink-color($mdc-theme-on-background);
+  // @include mdc-drawer-divider-color($mdc-theme-background);
+  @include mdc-drawer-fill-color-accessible($mdc-theme-primary);
+}
+
+.mdc-drawer-app-content {
+  @include mdc-elevation(4);
 }
 
 .mdc-image-list__supporting {
