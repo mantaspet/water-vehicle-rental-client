@@ -5,6 +5,9 @@
         <div>Pasirinkta transporto priemonė:</div>
         <div>{{ vehicle.brand }} {{ vehicle.model }} ({{ vehicle.year }})</div>
       </h1>
+      <div v-if="vehicle.imageUrl" class="mdc-card image-container">
+        <img :src="vehicle.imageUrl">
+      </div>
       <TimeTable
         :selectedTime="selectedTimeString"
         @nextWeekClick="getNextWeek"
@@ -170,5 +173,12 @@ h1 {
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+
+.image-container {
+  padding-top: 6px;
+  margin: 12px 0;
+  display: block;
+  text-align: center;
 }
 </style>

@@ -64,6 +64,14 @@
               >Būsena</label>
               <div class="mdc-line-ripple"></div>
             </div>
+            <div class="file-input">
+              <h3 class="mdc-typography--subtitle1" style="margin-bottom: 0">{{ fileInputSubtitle }}</h3>
+              <input
+                type="file"
+                accept=".jpg, .jpeg, .png, .bmp, .gif"
+                @change="fileSelected"
+              >
+            </div>
           </div>
           <footer class="mdc-dialog__actions">
             <button
@@ -94,7 +102,8 @@ export default {
 
   data() {
     return {
-      availableStatuses: ["Paruošta naudojimui", "Lauka apžiūros"]
+      availableStatuses: ["Paruošta naudojimui", "Lauka apžiūros"],
+      selectedFile: null
     };
   },
 
@@ -103,6 +112,12 @@ export default {
       return this.index === -1
         ? "Nauja transporto priemonė"
         : "Transporto priemonės redagavimas";
+    },
+
+    fileInputSubtitle() {
+      return this.index === -1
+        ? "Nuotraukos įkėlimas"
+        : "Pakeisti įkeltą nuotrauką";
     }
   },
 
@@ -116,20 +131,31 @@ export default {
   methods: {
     save() {
       if (this.index > -1) {
-        this.$store.dispatch("updateVehicle", this.vehicle).then(() => {
+        this.$store.dispatch("prepareForUpdate", {
+          vehicle: this.vehicle,
+          file: this.selectedFile,
+        }).then(() => {
           this.$store.commit("openSnackbar", {
             message: "Transporto priemonė atnaujinta"
           });
         });
       } else {
-        this.$store.dispatch("saveNewVehicle", this.vehicle);
+        this.$store.dispatch("saveNewVehicle", {
+          vehicle: this.vehicle,
+          file: this.selectedFile,
+        });
       }
+    },
+
+    fileSelected(event) {
+      this.selectedFile = event.target.files[0];
     }
   }
 };
 </script>
 
 <style lang="scss" scoped>
+.file-input,
 .mdc-text-field,
 .mdc-select {
   margin: 8px auto;

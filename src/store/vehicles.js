@@ -68,6 +68,33 @@ export default {
 	},
 
 	actions: {
+		uploadVehicleImage({}, file) {
+			return new Promise((resolve,) => {
+				const metadata = {
+					contentType: file.type
+				};
+
+				const uploadTask = firebase
+					.storage()
+					.ref()
+					.child('vehicles/' + file.name)
+					.put(file, metadata);			
+
+				// Listen for state changes, errors, and completion of the upload.
+				uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,	function(snapshot) {
+					// Track progress here
+				}, function(error) {
+					// React to errors. A full list of error codes is available at
+					// https://firebase.google.com/docs/storage/web/handle-errors
+				}, function() {
+					// Upload completed successfully, now we can get the download URL
+					uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
+						resolve(downloadURL);
+					});
+				});
+			});
+		},
+
 		getVehicles({ commit }) {
 			firebase
 				.firestore()
@@ -100,19 +127,46 @@ export default {
 			});
 		},
 
-		saveNewVehicle({ commit }, vehicle) {
-			vehicle.reservations = [];
-			firebase
-				.firestore()
-				.collection('vehicles')
-				.add(vehicle)
-				.then((res) => {
-					vehicle.id = res.id;
-					commit('storeNewVehicle', vehicle);
-					commit('openSnackbar', {
-						message: 'Transporto priemonė sukurta',
-					});
+		saveNewVehicle({ commit, dispatch }, payload) {
+			return new Promise((resolve) => {
+				let vehicle = payload.vehicle;
+				const file = payload.file;
+				vehicle.reservations = [];
+				dispatch('uploadVehicleImage', file).then(url => {
+					vehicle.imageUrl = url;
+					firebase
+						.firestore()
+						.collection('vehicles')
+						.add(vehicle)
+						.then((res) => {
+							vehicle.id = res.id;
+							commit('storeNewVehicle', vehicle);
+							commit('openSnackbar', {
+								message: 'Transporto priemonė sukurta',
+							});
+							resolve(vehicle);
+						});
 				});
+			});
+		},
+
+		prepareForUpdate({ dispatch }, payload) {
+			return new Promise((resolve) => {
+				let vehicle = payload.vehicle;
+				if (payload.file) {
+					const file = payload.file;
+					dispatch('uploadVehicleImage', file).then(url => {
+						vehicle.imageUrl = url;
+						dispatch('updateVehicle', vehicle).then(() => {
+							resolve();
+						});
+					});
+				} else {
+					dispatch('updateVehicle', vehicle).then(() => {
+						resolve();
+					});
+				}
+			});
 		},
 
 		updateVehicle({ commit }, vehicle) {

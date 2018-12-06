@@ -11,6 +11,9 @@
       </template>
       <template slot="items">
         <tr v-for="(vehicle, index) in $store.getters.vehicles" :key="vehicle.id" @click="viewVehicle(vehicle)">
+          <td>
+            <img :src="vehicle.imageUrl" height="150" style="padding-top: 6px;">
+          </td>
           <td>{{ vehicle.brand }}</td>
           <td>{{ vehicle.model }}</td>
           <td>{{ vehicle.year }}</td>
@@ -52,7 +55,7 @@ export default {
 
   data() {
     return {
-      headers: ["Markė", "Modelis", "Metai", "Būsena", "Veiksmai"]
+      headers: ["Nuotrauka", "Markė", "Modelis", "Metai", "Būsena", "Veiksmai"]
     };
   },
 
