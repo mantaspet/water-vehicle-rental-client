@@ -191,12 +191,30 @@ export default {
 @import "@material/checkbox/mdc-checkbox";
 @import "@material/menu-surface/mdc-menu-surface";
 @import "@material/menu/mdc-menu";
+@import "@material/image-list/mdc-image-list";
 
 body {
   height: 100vh;
   font-family: "Roboto", sans-serif;
   margin: 0;
   padding-top: 0.1px; // Prevent header h1 margin from pushing body down
+}
+
+.vehicle-list {
+  @include mdc-image-list-masonry-columns(4);
+  overflow: auto;
+}
+
+.mdc-image-list__supporting {
+  justify-content: center;
+}
+
+.mdc-image-list__item {
+  cursor: pointer;
+}
+
+.mdc-image-list__label {
+  @include mdc-typography(subtitle2);
 }
 
 #app {
