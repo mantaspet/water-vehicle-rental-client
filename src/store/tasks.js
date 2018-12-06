@@ -7,15 +7,16 @@ export default {
 
 	getters: {
 		tasks(state) {
-			return state.tasks.sort((task) => {
-				return task.isCompleted ? -1 : 1;
+			return state.tasks.sort((task, nextTask) => {
+				return task.isCompleted - nextTask.isCompleted;
 			});
 		},
 	},
 
 	mutations: {
-		storeUpdatedTask(state, payload) {
-			state.tasks.splice(payload.index, 1, payload.task);
+		storeUpdatedTask(state, updatedTask) {
+			const index = state.tasks.findIndex(task => task.id === updatedTask.id);
+			state.tasks.splice(index, 1, updatedTask);
 		},
 
 		storeTasks(state, tasks) {
@@ -24,7 +25,6 @@ export default {
 
 		storeNewTask(state, task) {
 			state.tasks.push(task);
-			state.taskDialog.close();
 		},
 	},
 
@@ -46,31 +46,34 @@ export default {
 				});
 		},
 
-		saveNewTask({ commit, dispatch }, payload) {
+		saveNewTask({ commit }, reservation) {
 			return new Promise((resolve) => {
-				let task = payload.task;
-				const file = payload.file;
-				task.reservations = [];
-				dispatch('uploadTaskImage', file).then(url => {
-					task.imageUrl = url;
-					firebase
-						.firestore()
-						.collection('tasks')
-						.add(task)
-						.then((res) => {
-							task.id = res.id;
-							commit('storeNewTask', task);
-							resolve(task);
-						});
-				});
+				let task = {
+					time: reservation.time,
+					vehicle: reservation.vehicle,
+					isCompleted: false,
+				};
+				firebase
+					.firestore()
+					.collection('tasks')
+					.add(task)
+					.then((res) => {
+						task.id = res.id;
+						commit('storeNewTask', task);
+						resolve(task);
+					});
 			});
 		},
 
-		updateTask({ commit }, payload) {
+		updateTask({ commit, getters }, task) {
 			return new Promise((resolve, reject) => {
-				let task = payload.task;
 				const id = task.id;
 				delete task.id;
+				if (task.isCompleted) {
+					task.closedBy = getters.currentUser.userId;
+				} else {
+					delete task.closedBy;
+				}
 				firebase
 					.firestore()
 					.collection('tasks')
@@ -78,10 +81,7 @@ export default {
 					.update(task)
 					.then(() => {
 						task.id = id;
-						commit('storeUpdatedTask', {
-							task,
-							index: payload.index,
-						});
+						commit('storeUpdatedTask', task);
 						resolve();
 					}).catch(() => {
 						reject();

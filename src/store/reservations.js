@@ -1,7 +1,5 @@
 import firebase from 'firebase';
-import { EventBus } from '../event-bus';
 import router from '../router';
-import { stat } from 'fs';
 
 export default {
 	state: {
@@ -78,7 +76,7 @@ export default {
         });
 		},
 
-		createReservation({ commit }, reservation) {
+		createReservation({ commit, dispatch }, reservation) {
 			return new Promise((resolve, reject) => {
 				firebase
 					.firestore()
@@ -91,6 +89,7 @@ export default {
 							message: "Rezervacija sukurta"
 						});
 						router.push({ name: 'reservations' });
+						dispatch('saveNewTask', reservation);
 						resolve();
         	}).catch((err) => {
 						commit("openSnackbar", {

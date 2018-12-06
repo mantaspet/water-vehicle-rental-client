@@ -8,7 +8,7 @@
           class="mdc-list-item"
           role="checkbox"
           aria-checked="false"
-          @click="changeTaskStatus(task, index)"
+          @click="changeTaskStatus(task)"
         >
           <span class="mdc-list-item__graphic">
             <div class="mdc-checkbox">
@@ -61,13 +61,10 @@ export default {
   },
 
   methods: {
-    changeTaskStatus(task, index) {
+    changeTaskStatus(task) {
       task.isCompleted = !task.isCompleted;
       this.$store
-        .dispatch("updateTask", {
-          task,
-          index
-        })
+        .dispatch("updateTask", task)
         .then(() => {})
         .catch(() => {
           task.isCompleted = !task.isCompleted;
