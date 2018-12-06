@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 class="mdc-typography--headline4">Darbuotojų sąrašas</h1>
+    <h1 class="mdc-typography--headline4">Darbuotojai</h1>
     <button class="mdc-fab mdc-fab--extended" @click="createEmployee">
       <span class="material-icons mdc-fab__icon">add</span>
       <span class="mdc-fab__label">Sukurti naują</span>

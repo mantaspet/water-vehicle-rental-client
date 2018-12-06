@@ -140,7 +140,7 @@ export default {
   computed: {
     title() {
       return this.$store.getters.currentUser.role === "admin"
-        ? "Rezervacijų sąrašas"
+        ? "Rezervacijos"
         : "Jūsų rezervacijos";
     }
   },

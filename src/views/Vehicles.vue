@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 class="mdc-typography--headline4">Transporto priemonių sąrašas</h1>
+    <h1 class="mdc-typography--headline4">Transporto priemonės</h1>
     <button class="mdc-fab mdc-fab--extended" @click="createVehicle">
       <span class="material-icons mdc-fab__icon">add</span>
       <span class="mdc-fab__label">Sukurti naują</span>

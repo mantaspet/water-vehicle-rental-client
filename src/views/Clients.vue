@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 class="mdc-typography--headline4">Klientų sąrašas</h1>
+    <h1 class="mdc-typography--headline4">Klientai</h1>
     <DataTable :items="$store.getters.clients">
       <template slot="headers">
         <th v-for="header in headers" :key="header">{{ header }}</th>
