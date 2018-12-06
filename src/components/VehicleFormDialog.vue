@@ -49,7 +49,7 @@
               >Metai</label>
               <div class="mdc-line-ripple"></div>
             </div>
-            <div id="status" class="mdc-select">
+            <!-- <div id="status" class="mdc-select">
               <i class="mdc-select__dropdown-icon"></i>
               <select v-model="vehicle.status" class="mdc-select__native-control" required>
                 <option
@@ -63,12 +63,13 @@
                 class="mdc-floating-label"
               >Būsena</label>
               <div class="mdc-line-ripple"></div>
-            </div>
+            </div> -->
             <div class="file-input">
               <h3 class="mdc-typography--subtitle1" style="margin-bottom: 0">{{ fileInputSubtitle }}</h3>
               <input
                 type="file"
                 accept=".jpg, .jpeg, .png, .bmp, .gif"
+                :required="index === -1"
                 @change="fileSelected"
               >
             </div>
@@ -90,7 +91,7 @@
 
 <script>
 import { MDCTextField } from "@material/textfield";
-import { MDCSelect } from "@material/select";
+// import { MDCSelect } from "@material/select";
 
 export default {
   name: "VehicleFormDialog",
@@ -102,7 +103,7 @@ export default {
 
   data() {
     return {
-      availableStatuses: ["Paruošta naudojimui", "Lauka apžiūros"],
+      // availableStatuses: ["Paruošta naudojimui", "Lauka apžiūros"],
       selectedFile: null
     };
   },
@@ -125,7 +126,7 @@ export default {
     new MDCTextField(document.querySelector("#brand"));
     new MDCTextField(document.querySelector("#model"));
     new MDCTextField(document.querySelector("#year"));
-    new MDCSelect(document.querySelector("#status"));
+    // new MDCSelect(document.querySelector("#status"));
   },
 
   methods: {
