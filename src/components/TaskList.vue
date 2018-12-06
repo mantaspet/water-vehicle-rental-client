@@ -84,10 +84,7 @@ h3 {
   cursor: pointer;
 }
 
-.mdc-card {
-  width: fit-content;
-  min-width: 500px;
-}
+
 
 .task-completed {
   color: lightgrey;

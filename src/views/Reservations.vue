@@ -2,7 +2,24 @@
   <div>
     <div class="header-wrapper">
       <h1 class="mdc-typography--headline4">{{ title }}</h1>
-      <div>
+      <div style="display: flex">
+        <div v-show="$userRole('admin')" id="client" class="mdc-select">
+          <i class="mdc-select__dropdown-icon"></i>
+          <select
+            v-model="selectedClient"
+            class="mdc-select__native-control"
+            @change="getClientReservations"
+          >
+            <option :value="null"></option>
+            <option
+              v-for="client in $store.getters.clients"
+              :key="client.userId"
+              :value="client"
+            >{{ `${client.firstName} ${client.lastName}` }}</option>
+          </select>
+          <label class="mdc-floating-label">Klientas</label>
+          <div class="mdc-line-ripple"></div>
+        </div>
         <div id="date-from" class="mdc-text-field mdc-text-field--box">
           <input
             v-model="dateFrom"
@@ -53,6 +70,7 @@ import DataTable from "../components/DataTable";
 import ClientInfoDialog from "../components/ClientInfoDialog";
 import { MDCDialog } from "@material/dialog";
 import { MDCTextField } from "@material/textfield";
+import { MDCSelect } from "@material/select";
 
 export default {
   name: "Reservations",
@@ -69,6 +87,7 @@ export default {
       dateFrom: "",
       dateTo: "",
       timer: null,
+      selectedClient: null,
       headers: ["Transporto priemonė", "Maršrutas", "Data", "Klientas"]
     };
   },
@@ -82,10 +101,11 @@ export default {
   },
 
   created() {
-    if (this.$store.getters.currentUser.role === "admin") {
+    if (this.$userRole(["admin", "employee"])) {
       this.$store.dispatch("getAllReservations");
+      this.$store.dispatch("getClients");
     } else {
-      this.$store.dispatch("getMyReservations");
+      this.$store.dispatch("getClientReservations", this.$store.currentUser.userId);
     }
   },
 
@@ -95,6 +115,7 @@ export default {
     );
     new MDCTextField(document.querySelector("#date-from"));
     new MDCTextField(document.querySelector("#date-to"));
+    new MDCSelect(document.querySelector("#client"));
   },
 
   methods: {
@@ -115,6 +136,14 @@ export default {
           timeTo
         });
       }, 500);
+    },
+
+    getClientReservations() {
+      if (this.selectedClient) {
+        this.$store.dispatch("getClientReservations", this.selectedClient.userId);
+      } else {
+        this.$store.dispatch("getAllReservations");
+      }
     }
   }
 };
@@ -123,5 +152,9 @@ export default {
 <style lang="scss" scoped>
 .mdc-text-field {
   margin-left: 12px;
+}
+
+.mdc-select {
+  min-width: 192px;
 }
 </style>

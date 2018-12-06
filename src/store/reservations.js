@@ -57,12 +57,11 @@ export default {
         });
 		},
 
-		getMyReservations({ commit, getters }) {
-			const currentUserId = getters.currentUser.userId;
+		getClientReservations({ commit }, userId) {
 			firebase
         .firestore()
 				.collection('reservations')
-				.where('userId', '==', currentUserId)
+				.where('userId', '==', userId)
         .get()
         .then(res => {
 					let reservation;
