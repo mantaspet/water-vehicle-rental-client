@@ -1,5 +1,5 @@
 <template>
-  <div style="text-align: center">
+  <div class="page-wrapper">
     <section class="header">
       <div class="site-logo">
         <img alt="site-logo" src="../assets/logo.png" height="150">
@@ -65,16 +65,16 @@
       <div class="button-container">
         <button
           type="submit"
-          id="login-btn"
+          id="signup-btn"
           class="mdc-button mdc-button--raised signup"
         >Registruotis</button>
-        <p style="margin-top: 48px">Jau esate užsiregistravę?</p>
+        <!-- <p style="margin-top: 48px">Jau esate užsiregistravę?</p>
         <button
           type="button"
-          id="signup-btn"
+          id="login-btn"
           class="mdc-button mdc-button--raised login"
           @click="$router.push({ name: 'login' })"
-        >Prisijungti</button>
+        >Prisijungti</button> -->
       </div>
     </form>
   </div>
@@ -108,7 +108,6 @@ export default {
     new MDCTextField(document.querySelector("#account-no"));
     new MDCTextField(document.querySelector("#password"));
     new MDCTextField(document.querySelector("#repeat-password"));
-    new MDCRipple(document.querySelector("#login-btn"));
     new MDCRipple(document.querySelector("#signup-btn"));
   },
 
@@ -138,6 +137,10 @@ export default {
 
 <style lang="scss" scoped>
 .header {
+  text-align: center;
+}
+
+.page-wrapper {
   text-align: center;
 }
 

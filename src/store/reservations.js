@@ -1,7 +1,5 @@
 import firebase from 'firebase';
-import { EventBus } from '../event-bus';
 import router from '../router';
-import { stat } from 'fs';
 
 export default {
 	state: {
@@ -35,6 +33,11 @@ export default {
 			state.reservations.push(reservation);
 		},
 
+		storeUpdateReservation(state, updatedReservation) {
+			const index = state.reservations.findIndex(reservation => reservation.id === updatedReservation.id);
+			state.reservations.splice(index, 1, updatedReservation);
+		},
+
 		filterReservations(state, payload) {
 			state.timeFrom = payload.timeFrom;
 			state.timeTo = payload.timeTo;
@@ -59,12 +62,11 @@ export default {
         });
 		},
 
-		getMyReservations({ commit, getters }) {
-			const currentUserId = getters.currentUser.userId;
+		getClientReservations({ commit }, userId) {
 			firebase
         .firestore()
 				.collection('reservations')
-				.where('userId', '==', currentUserId)
+				.where('userId', '==', userId)
         .get()
         .then(res => {
 					let reservation;
@@ -78,7 +80,7 @@ export default {
         });
 		},
 
-		createReservation({ commit }, reservation) {
+		createReservation({ commit, dispatch }, reservation) {
 			return new Promise((resolve, reject) => {
 				firebase
 					.firestore()
@@ -91,6 +93,7 @@ export default {
 							message: "Rezervacija sukurta"
 						});
 						router.push({ name: 'reservations' });
+						dispatch('saveNewTask', reservation);
 						resolve();
         	}).catch((err) => {
 						commit("openSnackbar", {
@@ -99,7 +102,29 @@ export default {
 						reject();
 					});
 			});
-		
+		},
+
+		updateReservation({ commit }, reservation) {
+			return new Promise((resolve, reject) => {
+				const id = reservation.id;
+				delete reservation.id;
+				console.log(reservation);
+				firebase
+					.firestore()
+					.collection("reservations")
+					.doc(id)
+					.update(reservation)
+					.then(() => {
+						reservation.id = id;
+						commit("storeUpdateReservation", reservation);
+						resolve();
+        	}).catch((err) => {
+						commit("openSnackbar", {
+							message: err.message,
+						});
+						reject();
+					});
+			});
 		},
 	}
 };

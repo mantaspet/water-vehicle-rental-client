@@ -4,6 +4,7 @@ import firebase from 'firebase';
 import Vehicles from './views/Vehicles.vue';
 import Login from './views/Login.vue';
 import SignUp from './views/SignUp.vue';
+import store from './store/index';
 
 Vue.use(Router);
 
@@ -24,6 +25,9 @@ const router = new Router({
       path: '/vehicle/:id',
       name: 'vehicle',
       component: () => import(/* webpackChunkName: "vehicle" */ './views/Vehicle.vue'),
+      meta: {
+        requiresAuth: true,
+      },
     },
     {
       path: '/login',
@@ -41,6 +45,7 @@ const router = new Router({
       component: () => import(/* webpackChunkName: "clients" */ './views/Clients.vue'),
       meta: {
         requiresAuth: true,
+        allowedRoles: ['admin'],
       },
     },
     {
@@ -57,7 +62,22 @@ const router = new Router({
       component: () => import(/* webpackChunkName: "employees" */ './views/Employees.vue'),
       meta: {
         requiresAuth: true,
+        allowedRoles: ['admin']
       },
+    },
+    {
+      path: '/tasks',
+      name: 'tasks',
+      component: () => import(/* webpackChunkName: "tasks" */ './views/Tasks.vue'),
+      meta: {
+        requiresAuth: true,
+        allowedRoles: ['admin', 'employee'],
+      },
+    },
+    {
+      path: '/reviews',
+      name: 'reviews',
+      component: () => import(/* webpackChunkName: "reviews" */ './views/Reviews.vue'),
     },
     {
       path: '/about',
@@ -68,13 +88,30 @@ const router = new Router({
 });
 
 router.beforeEach((to, from, next) => {
-  const currentUser = firebase.auth().currentUser;
-  const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
+  const firebaseUser = firebase.auth().currentUser;
 
-  if (requiresAuth && !currentUser) {
-    next('login')
+  if (!to.meta.requiresAuth) {
+    next();
+  } else if (to.meta.requiresAuth && !firebaseUser) {
+    next('login');
+  } else if (!to.meta.allowedRoles) {
+    next();
   } else {
-    next();  
+    const currentUser = store.getters.currentUser;
+    if (!currentUser) {
+      store.dispatch('getCurrentUser').then((user) => {
+        if (to.meta.allowedRoles.includes(user.role)) {
+          next();
+        } else {
+          next(false);
+        }
+      });
+    } else if (to.meta.allowedRoles.includes(currentUser.role)) {
+      next();
+    } else {
+      next(false);
+    }
+    next();
   }
 });
 

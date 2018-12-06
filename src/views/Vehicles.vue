@@ -1,35 +1,26 @@
 <template>
   <div>
-    <h1 class="mdc-typography--headline4">Transporto priemonių sąrašas</h1>
-    <button class="mdc-fab mdc-fab--extended" @click="createVehicle">
+    <h1 class="mdc-typography--headline4">Transporto priemonės</h1>
+    <button v-show="$userRole('admin')" class="mdc-fab mdc-fab--extended" @click="createVehicle">
       <span class="material-icons mdc-fab__icon">add</span>
       <span class="mdc-fab__label">Sukurti naują</span>
     </button>
-    <DataTable :items="$store.getters.vehicles" clickable-rows>
-      <template slot="headers">
-        <th v-for="header in headers" :key="header">{{ header }}</th>
-      </template>
-      <template slot="items">
-        <tr v-for="(vehicle, index) in $store.getters.vehicles" :key="vehicle.id" @click="viewVehicle(vehicle)">
-          <td>{{ vehicle.brand }}</td>
-          <td>{{ vehicle.model }}</td>
-          <td>{{ vehicle.year }}</td>
-          <td>{{ vehicle.status }}</td>
-          <td>
-            <button
-              class="material-icons mdc-icon-button"
-              title="Redaguoti"
-              @click.stop="editVehicle(vehicle, index)"
-            >edit</button>
-            <button
-              class="material-icons mdc-icon-button"
-              title="Trinti"
-              @click.stop="deleteVehicle(vehicle, index)"
-            >delete</button>
-          </td>
-        </tr>
-      </template>
-    </DataTable>
+    <ul class="mdc-image-list mdc-image-list--masonry vehicle-list">
+      <li v-for="(vehicle, index) in $store.getters.vehicles" :key="vehicle.id" @click="viewVehicle(vehicle)" class="mdc-image-list__item mdc-card">
+        <img class="mdc-image-list__image" :src="vehicle.imageUrl">
+        <div class="mdc-image-list__supporting">
+          <span class="mdc-typography--subtitle1">
+            {{ vehicle.brand }} {{ vehicle.model }} ({{ vehicle.year }})
+          </span>
+        </div>
+        <div v-show="$userRole('admin')" class="mdc-card__actions">
+          <div class="mdc-card__action-icons">
+            <button class="material-icons mdc-icon-button mdc-card__action mdc-card__action--icon" title="Redaguoti" @click.stop="editVehicle(vehicle, index)">edit</button>
+            <button class="material-icons mdc-icon-button mdc-card__action mdc-card__action--icon" title="Trinti" @click.stop="deleteVehicle(vehicle, index)">delete</button>
+          </div>
+        </div>
+      </li>
+    </ul>
     <VehicleFormDialog
       :vehicle="$store.state.vehicles.selectedVehicle"
       :index="$store.state.vehicles.selectedVehicleIndex"
@@ -38,7 +29,6 @@
 </template>
 
 <script>
-import DataTable from "../components/DataTable";
 import { MDCRipple } from "@material/ripple";
 import VehicleFormDialog from "../components/VehicleFormDialog";
 
@@ -46,13 +36,12 @@ export default {
   name: "Vehicles",
 
   components: {
-    DataTable,
     VehicleFormDialog,
   },
 
   data() {
     return {
-      headers: ["Markė", "Modelis", "Metai", "Būsena", "Veiksmai"]
+      headers: ["Nuotrauka", "Markė", "Modelis", "Metai", "Veiksmai"]
     };
   },
 
@@ -91,3 +80,9 @@ export default {
   }
 };
 </script>
+
+<style lang="scss" scoped>
+.mdc-image-list {
+  padding: 1px;
+}
+</style>

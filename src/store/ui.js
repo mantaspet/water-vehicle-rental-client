@@ -26,6 +26,7 @@ export default {
 				state.drawer = MDCDrawer.attachTo(document.querySelector(".mdc-drawer--modal"));
 			} else {
 				state.drawer = MDCDrawer.attachTo(document.querySelector(".mdc-drawer--dismissible"));
+				state.drawer.open = true;
 			}
 		},
 

@@ -19,14 +19,15 @@
         <div style="text-align: center; margin: 16px">
           <img
             alt="site-logo"
-            src="./assets/logo.png"
-            height="100"
+            src="./assets/logo-inverted.png"
+            height="80"
             style="cursor: pointer"
             @click="$router.push({ name: 'home' })"
           >
         </div>
-        <nav v-if="!hideDrawer" class="mdc-list">
+        <nav class="mdc-list">
           <router-link
+            v-if="!item.allowedRoles || (item.allowedRoles && item.allowedRoles.includes($store.getters.currentUser.role))"
             v-for="item in navigationItems"
             :key="item.route"
             :class="['mdc-list-item', { 'mdc-list-item--activated': $route.fullPath === item.route }]"
@@ -37,19 +38,31 @@
             <span class="mdc-list-item__text">{{ item.text }}</span>
           </router-link>
           <hr class="mdc-list-divider">
-          <a class="mdc-list-item" @click="logout">
+          <a v-if="$store.getters.currentUser.userId" class="mdc-list-item" @click="logout">
             <i class="material-icons mdc-list-item__graphic" aria-hidden="true">exit_to_app</i>
             <span class="mdc-list-item__text">Atsijungti</span>
           </a>
+          <template v-else>
+            <router-link
+              :class="['mdc-list-item', { 'mdc-list-item--activated': $route.fullPath === '/login' }]"
+              to="/login"
+            >
+              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">person</i>
+              <span class="mdc-list-item__text">Prisijungti</span>
+            </router-link>
+            <router-link
+              :class="['mdc-list-item', { 'mdc-list-item--activated': $route.fullPath === '/signup' }]"
+              to="/signup"
+            >
+              <i class="material-icons mdc-list-item__graphic" aria-hidden="true">person_add</i>
+              <span class="mdc-list-item__text">Registruotis</span>
+            </router-link>
+          </template>
         </nav>
       </div>
     </aside>
     <div class="mdc-drawer-app-content">
-      <button
-        v-show="!hideDrawer"
-        class="mdc-icon-button material-icons ma-1"
-        @click="toggleDrawer"
-      >menu</button>
+      <button class="mdc-icon-button material-icons ma-1" @click="toggleDrawer">menu</button>
       <router-view style="padding: 16px"/>
     </div>
     <div class="mdc-snackbar" aria-live="assertive" aria-atomic="true" aria-hidden="true">
@@ -108,31 +121,36 @@ export default {
 
   data() {
     return {
-      hideDrawerIn: ["login", "signup"],
       navigationItems: [
         { text: "Transporto priemonės", route: "/", icon: "home" },
-        { text: "Rezervacijos", route: "/reservations", icon: "event" },
-        { text: "Klientai", route: "/clients", icon: "person" },
-        { text: "Darbuotojai", route: "/employees", icon: "build" },
+        {
+          text: "Rezervacijos",
+          route: "/reservations",
+          icon: "event",
+          allowedRoles: ["client", "employee", "admin"]
+        },
+        {
+          text: "Klientai",
+          route: "/clients",
+          icon: "person",
+          allowedRoles: ["admin"]
+        },
+        {
+          text: "Darbuotojai",
+          route: "/employees",
+          icon: "build",
+          allowedRoles: ["admin"]
+        },
+        {
+          text: "Užduotys",
+          route: "/tasks",
+          icon: "assignment",
+          allowedRoles: ["employee", "admin"]
+        },
+        { text: "Atsiliepimai", route: "/reviews", icon: "comment" },
         { text: "Apie įmonę", route: "/about", icon: "description" }
       ]
     };
-  },
-
-  computed: {
-    hideDrawer() {
-      return this.hideDrawerIn.includes(this.$route.name);
-    }
-  },
-
-  watch: {
-    $route(to, from) {
-      if (this.hideDrawerIn.includes(to.name)) {
-        this.$store.commit("hideDrawer");
-      } else {
-        this.$store.commit("openDrawer");
-      }
-    }
   },
 
   mounted() {
@@ -143,9 +161,6 @@ export default {
       document.querySelector(".mdc-icon-button")
     );
     iconButtonRipple.unbounded = true;
-    if (!this.hideDrawerIn.includes(this.$route.name)) {
-      this.$store.commit("openDrawer");
-    }
   },
 
   methods: {
@@ -162,14 +177,17 @@ export default {
 
 
 <style lang="scss">
-// $mdc-theme-primary: #fedbd0;
-// $mdc-theme-on-primary: #442c2e;
-// $mdc-theme-secondary: #feeae6;
-// $mdc-theme-on-secondary: #442c2e;
-// $mdc-theme-surface: #fffbfa;
-// $mdc-theme-on-surface: #442c2e;
-// $mdc-theme-background: #ffffff;
-// $mdc-theme-on-background: #442c2e;
+$mdc-theme-primary: #ff1744;
+// $mdc-theme-on-primary: #442C2E;
+$mdc-theme-secondary: #ff1744;
+// $mdc-drawer-surface-fill-color: #EF5350;
+// $mdc-drawer-divider-color: white;
+// $mdc-theme-on-secondary: #442C2E;
+// $mdc-theme-surface: #F44336;
+// $mdc-theme-on-surface: #ffd54f;
+$mdc-theme-background: #ffffff;
+$mdc-theme-on-background: #000000;
+// $mdc-theme-icon: #F44336;
 
 @import "@material/button/mdc-button";
 @import "@material/icon-button/mdc-icon-button";
@@ -185,12 +203,61 @@ export default {
 @import "@material/fab/mdc-fab";
 @import "@material/grid-list/mdc-grid-list";
 @import "@material/select/mdc-select";
+@import "@material/form-field/mdc-form-field";
+@import "@material/checkbox/mdc-checkbox";
+@import "@material/menu-surface/mdc-menu-surface";
+@import "@material/menu/mdc-menu";
+@import "@material/image-list/mdc-image-list";
 
 body {
   height: 100vh;
   font-family: "Roboto", sans-serif;
   margin: 0;
   padding-top: 0.1px; // Prevent header h1 margin from pushing body down
+}
+
+.vehicle-list {
+  @include mdc-image-list-masonry-columns(4);
+
+  overflow: auto;
+}
+
+.router-link-exact-active {
+  background: rgba(33, 33, 33, 0.25) !important;
+}
+
+.mdc-icon-button {
+  @include mdc-icon-button-ink-color($mdc-theme-primary);
+}
+
+.mdc-card__action {
+  color: $mdc-theme-primary !important;
+}
+
+.mdc-drawer {
+  // @include mdc-drawer-surface-fill-color($mdc-theme-primary);
+  @include mdc-drawer-item-text-ink-color($mdc-theme-on-background);
+  @include mdc-drawer-item-icon-ink-color($mdc-theme-on-background);
+  @include mdc-drawer-item-activated-icon-ink-color($mdc-theme-on-background);
+  @include mdc-drawer-divider-color($mdc-theme-background);
+  @include mdc-drawer-fill-color-accessible($mdc-theme-primary);
+}
+
+.mdc-drawer-app-content {
+  @include mdc-elevation(4);
+}
+
+.mdc-image-list__supporting {
+  justify-content: center;
+}
+
+.mdc-image-list__item,
+.mdc-list-item {
+  cursor: pointer;
+}
+
+.mdc-image-list__label {
+  @include mdc-typography(subtitle2);
 }
 
 #app {
@@ -201,6 +268,12 @@ body {
   padding-top: 16px;
   text-align: center;
   margin: 16px;
+}
+
+.header-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .alert-text {
