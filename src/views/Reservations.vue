@@ -51,54 +51,93 @@
           <td>{{ reservation.vehicle }}</td>
           <td>{{ reservation.route }}</td>
           <td>{{ $getFormattedDate(reservation.time) }}</td>
-          <td class="mdc-menu-surface--anchor">
+          <td>
             <button
+              v-if="$userRole(['employee', 'admin'])"
               class="material-icons mdc-icon-button"
               title="Peržiūrėti kliento info"
               @click.stop="viewReservationCreator(reservation)"
             >person</button>
-
-            <button
-              v-if="!reservation.wasReviewed"
-              class="material-icons mdc-icon-button"
-              title="Palikti įvertinimą"
-              @click.stop="openReviewMenu(reservation)"
-            >comment</button>
-
-            <div :id="`menu-${reservation.id}`" class="mdc-menu mdc-menu-surface" tabindex="-1">
-              <ul class="mdc-list mdc-list--non-interactive" role="menu" aria-hidden="true" aria-orientation="vertical">
-                <li class="mdc-list-item" role="menuitem">
-                  <button class="mdc-icon-button" type="button" role="menuitem" @click="openReviewDialog(5)">
-                    <img src="../assets/heart-emoji.png" class="mdc-icon-button__icon">
-                  </button>
-                </li>
-                <li class="mdc-list-item" role="menuitem">
-                  <button class="mdc-icon-button" type="button" role="menuitem" @click="openReviewDialog(4)">
-                    <img src="../assets/face-with-heart-eyes-emoji.png" class="mdc-icon-button__icon">
-                  </button>
-                </li>
-                <li class="mdc-list-item" role="menuitem">
-                  <button class="mdc-icon-button" type="button" role="menuitem" @click="openReviewDialog(3)">
-                    <img src="../assets/thinking-emoji.png" class="mdc-icon-button__icon">
-                  </button>
-                </li>
-                <li class="mdc-list-item" role="menuitem">
-                  <button class="mdc-icon-button" type="button" role="menuitem" @click="openReviewDialog(2)">
-                    <img src="../assets/tear-emoji.png" class="mdc-icon-button__icon">
-                  </button>
-                </li>
-                <li class="mdc-list-item" role="menuitem">
-                  <button class="mdc-icon-button" type="button" role="menuitem" @click="openReviewDialog(1)">
-                    <img src="../assets/crying-emoji.png" class="mdc-icon-button__icon">
-                  </button>
-                </li>
-              </ul>
+            
+            <div v-if="$userRole('client')" class="mdc-menu-surface--anchor">
+              <button
+                v-if="!reservation.wasReviewed"
+                class="material-icons mdc-icon-button mdc-menu-surface--anchor"
+                title="Palikti įvertinimą"
+                @click.stop="openReviewMenu(reservation)"
+              >comment</button>
+              <div :id="`menu-${reservation.id}`" class="mdc-menu mdc-menu-surface" tabindex="-1">
+                <ul
+                  class="mdc-list mdc-list--non-interactive"
+                  role="menu"
+                  aria-hidden="true"
+                  aria-orientation="vertical"
+                >
+                  <li class="mdc-list-item" role="menuitem">
+                    <button
+                      class="mdc-icon-button"
+                      type="button"
+                      role="menuitem"
+                      @click="openReviewDialog(5)"
+                    >
+                      <img src="../assets/heart-emoji.png" class="mdc-icon-button__icon">
+                    </button>
+                  </li>
+                  <li class="mdc-list-item" role="menuitem">
+                    <button
+                      class="mdc-icon-button"
+                      type="button"
+                      role="menuitem"
+                      @click="openReviewDialog(4)"
+                    >
+                      <img
+                        src="../assets/face-with-heart-eyes-emoji.png"
+                        class="mdc-icon-button__icon"
+                      >
+                    </button>
+                  </li>
+                  <li class="mdc-list-item" role="menuitem">
+                    <button
+                      class="mdc-icon-button"
+                      type="button"
+                      role="menuitem"
+                      @click="openReviewDialog(3)"
+                    >
+                      <img src="../assets/thinking-emoji.png" class="mdc-icon-button__icon">
+                    </button>
+                  </li>
+                  <li class="mdc-list-item" role="menuitem">
+                    <button
+                      class="mdc-icon-button"
+                      type="button"
+                      role="menuitem"
+                      @click="openReviewDialog(2)"
+                    >
+                      <img src="../assets/tear-emoji.png" class="mdc-icon-button__icon">
+                    </button>
+                  </li>
+                  <li class="mdc-list-item" role="menuitem">
+                    <button
+                      class="mdc-icon-button"
+                      type="button"
+                      role="menuitem"
+                      @click="openReviewDialog(1)"
+                    >
+                      <img src="../assets/crying-emoji.png" class="mdc-icon-button__icon">
+                    </button>
+                  </li>
+                </ul>
+              </div>
             </div>
           </td>
         </tr>
       </template>
     </DataTable>
-    <ReviewDialog :points="reviewPoints" :reservation="selectedReservation" @closeDialog="reviewDialog.close()"/>
+    <ReviewDialog
+      :points="reviewPoints"
+      :reservation="selectedReservation"
+      @closeDialog="reviewDialog.close()"
+    />
     <ClientInfoDialog :client="createdBy"/>
   </div>
 </template>
@@ -152,7 +191,7 @@ export default {
     } else {
       this.$store.dispatch(
         "getClientReservations",
-        this.$store.currentUser.userId
+        this.$store.getters.currentUser.userId
       );
     }
   },
@@ -212,13 +251,12 @@ export default {
         );
         this.menus[menuId].open = true;
       }
-      
     },
 
     openReviewDialog(points) {
       this.reviewPoints = points;
       this.reviewDialog.open();
-    },
+    }
   }
 };
 </script>

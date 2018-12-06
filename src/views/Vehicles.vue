@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1 class="mdc-typography--headline4">Transporto priemonės</h1>
-    <button class="mdc-fab mdc-fab--extended" @click="createVehicle">
+    <button v-show="$userRole('admin')" class="mdc-fab mdc-fab--extended" @click="createVehicle">
       <span class="material-icons mdc-fab__icon">add</span>
       <span class="mdc-fab__label">Sukurti naują</span>
     </button>
@@ -13,11 +13,7 @@
             {{ vehicle.brand }} {{ vehicle.model }} ({{ vehicle.year }})
           </span>
         </div>
-        <div class="mdc-card__actions">
-          <!-- <div class="mdc-card__action-buttons">
-            <button class="mdc-button mdc-card__action mdc-card__action--button">Redaguoti</button>
-            <button class="mdc-button mdc-card__action mdc-card__action--button">Trinti</button>
-          </div> -->
+        <div v-show="$userRole('admin')" class="mdc-card__actions">
           <div class="mdc-card__action-icons">
             <button class="material-icons mdc-icon-button mdc-card__action mdc-card__action--icon" title="Redaguoti" @click.stop="editVehicle(vehicle, index)">edit</button>
             <button class="material-icons mdc-icon-button mdc-card__action mdc-card__action--icon" title="Trinti" @click.stop="deleteVehicle(vehicle, index)">delete</button>
