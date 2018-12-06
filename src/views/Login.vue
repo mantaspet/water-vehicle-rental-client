@@ -1,5 +1,5 @@
 <template>
-  <div style="text-align: center">
+  <div class="page-wrapper">
     <section class="header">
       <div class="site-logo">
         <img
@@ -85,6 +85,10 @@ export default {
 
 <style lang="scss" scoped>
 .header {
+  text-align: center;
+}
+
+.page-wrapper {
   text-align: center;
 }
 
