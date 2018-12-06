@@ -186,9 +186,10 @@ export default {
 @import "@material/fab/mdc-fab";
 @import "@material/grid-list/mdc-grid-list";
 @import "@material/select/mdc-select";
-@import "@material/list/mdc-list";
 @import "@material/form-field/mdc-form-field";
 @import "@material/checkbox/mdc-checkbox";
+@import "@material/menu-surface/mdc-menu-surface";
+@import "@material/menu/mdc-menu";
 
 body {
   height: 100vh;

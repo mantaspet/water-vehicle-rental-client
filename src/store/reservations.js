@@ -33,6 +33,11 @@ export default {
 			state.reservations.push(reservation);
 		},
 
+		storeUpdateReservation(state, updatedReservation) {
+			const index = state.reservations.findIndex(reservation => reservation.id === updatedReservation.id);
+			state.reservations.splice(index, 1, updatedReservation);
+		},
+
 		filterReservations(state, payload) {
 			state.timeFrom = payload.timeFrom;
 			state.timeTo = payload.timeTo;
@@ -98,9 +103,53 @@ export default {
 					});
 			});
 		},
+
+		updateReservation({ commit }, reservation) {
+			return new Promise((resolve, reject) => {
+				const id = reservation.id;
+				delete reservation.id;
+				console.log(reservation);
+				firebase
+					.firestore()
+					.collection("reservations")
+					.doc(id)
+					.update(reservation)
+					.then(() => {
+						reservation.id = id;
+						commit("storeUpdateReservation", reservation);
+						resolve();
+        	}).catch((err) => {
+						commit("openSnackbar", {
+							message: err.message,
+						});
+						reject();
+					});
+			});
+		},
  
-		createEmployeeTask({ commit }, reservation) {
-			
+		createReview({ commit, dispatch }, payload) {
+			return new Promise((resolve) => {
+				let reservation = payload.reservation;
+				reservation.wasReviewed = true;
+				const review = payload.review;
+				firebase
+					.firestore()
+					.collection("reviews")
+					.add(review)
+					.then(() => {
+						dispatch("updateReservation", reservation).then(() => {
+							commit("openSnackbar", {
+								message: "Jūsų įvertinimas išsaugotas. Ačiū, kad naudojatės mūsų paslaugomis!"
+							});
+							resolve();
+						});
+					}).catch((err) => {
+						commit("openSnackbar", {
+							message: err.message,
+						});
+						reject();
+					});
+			});
 		},
 	}
 };
