@@ -164,14 +164,17 @@ export default {
 
 
 <style lang="scss">
-// $mdc-theme-primary: #fedbd0;
-// $mdc-theme-on-primary: #442c2e;
-// $mdc-theme-secondary: #feeae6;
-// $mdc-theme-on-secondary: #442c2e;
-// $mdc-theme-surface: #fffbfa;
-// $mdc-theme-on-surface: #442c2e;
-// $mdc-theme-background: #ffffff;
-// $mdc-theme-on-background: #442c2e;
+$mdc-theme-primary: #F44336;
+// $mdc-theme-on-primary: #442C2E;
+$mdc-theme-secondary: #F44336;
+// $mdc-drawer-surface-fill-color: #EF5350;
+// $mdc-drawer-divider-color: white;
+// $mdc-theme-on-secondary: #442C2E;
+// $mdc-theme-surface: #F44336;
+// $mdc-theme-on-surface: #FFFFFF;
+// $mdc-theme-background: #FFFFFF;
+// $mdc-theme-on-background: #FFFFFF;
+// $mdc-theme-icon: #F44336;
 
 @import "@material/button/mdc-button";
 @import "@material/icon-button/mdc-icon-button";
@@ -202,6 +205,7 @@ body {
 
 .vehicle-list {
   @include mdc-image-list-masonry-columns(4);
+
   overflow: auto;
 }
 
