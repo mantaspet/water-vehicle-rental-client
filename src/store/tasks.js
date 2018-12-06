@@ -7,18 +7,15 @@ export default {
 
 	getters: {
 		tasks(state) {
-			return state.tasks;
+			return state.tasks.sort((task) => {
+				return task.isCompleted ? -1 : 1;
+			});
 		},
 	},
 
 	mutations: {
-		storeUpdatedTask(state, task) {
-			if (state.selectedTaskIndex >= 0) {
-				state.tasks.splice(state.selectedTaskIndex, 1, task);
-			}
-			if (state.taskDialog) {
-				state.taskDialog.close();
-			}
+		storeUpdatedTask(state, payload) {
+			state.tasks.splice(payload.index, 1, payload.task);
 		},
 
 		storeTasks(state, tasks) {
@@ -69,8 +66,9 @@ export default {
 			});
 		},
 
-		updateTask({ commit }, task) {
-			return new Promise((resolve) => {
+		updateTask({ commit }, payload) {
+			return new Promise((resolve, reject) => {
+				let task = payload.task;
 				const id = task.id;
 				delete task.id;
 				firebase
@@ -80,8 +78,13 @@ export default {
 					.update(task)
 					.then(() => {
 						task.id = id;
+						commit('storeUpdatedTask', {
+							task,
+							index: payload.index,
+						});
 						resolve();
-						commit('storeUpdatedTask', task);
+					}).catch(() => {
+						reject();
 					});
 			})
 		},

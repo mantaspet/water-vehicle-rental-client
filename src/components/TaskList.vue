@@ -2,7 +2,14 @@
   <div class="mdc-card">
     <ul class="mdc-list mdc-list--two-line" role="group" aria-label="List with checkbox items">
       <template v-for="(task, index) of tasks">
-        <li :key="task.id" class="mdc-list-item" role="checkbox" aria-checked="false">
+        <li
+          :key="task.id"
+          :class="{ 'task-completed': task.isCompleted }"
+          class="mdc-list-item"
+          role="checkbox"
+          aria-checked="false"
+          @click="changeTaskStatus(task, index)"
+        >
           <span class="mdc-list-item__graphic">
             <div class="mdc-checkbox">
               <input
@@ -51,6 +58,21 @@ export default {
 
   mounted() {
     new MDCList(document.querySelector(".mdc-list"));
+  },
+
+  methods: {
+    changeTaskStatus(task, index) {
+      task.isCompleted = !task.isCompleted;
+      this.$store
+        .dispatch("updateTask", {
+          task,
+          index
+        })
+        .then(() => {})
+        .catch(() => {
+          task.isCompleted = !task.isCompleted;
+        });
+    }
   }
 };
 </script>
@@ -63,5 +85,10 @@ export default {
 .mdc-card {
   width: fit-content;
   min-width: 500px;
+}
+
+.task-completed {
+  color: lightgrey;
+  text-decoration: line-through;
 }
 </style>

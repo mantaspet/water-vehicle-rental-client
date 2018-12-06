@@ -28,7 +28,7 @@ export default {
   methods: {
     suspendClient(client) {
       this.$store.dispatch("suspendClient", client);
-    }
+		},
   }
 };
 </script>
