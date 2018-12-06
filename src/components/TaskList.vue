@@ -84,8 +84,6 @@ h3 {
   cursor: pointer;
 }
 
-
-
 .task-completed {
   color: lightgrey;
   text-decoration: line-through;

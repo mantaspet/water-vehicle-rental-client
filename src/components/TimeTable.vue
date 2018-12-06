@@ -43,6 +43,7 @@ export default {
 <style lang="scss" scoped>
 table {
 	border-collapse: collapse;
+	width: 100%;
 }
 
 th, td {
