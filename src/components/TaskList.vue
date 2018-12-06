@@ -36,7 +36,7 @@
           </span>
         </li>
         <li
-          v-if="index < $store.getters.tasks.length - 1"
+          v-if="index < tasks.length - 1"
           :key="index"
           role="separator"
           class="mdc-list-divider"

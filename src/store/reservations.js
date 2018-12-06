@@ -126,30 +126,5 @@ export default {
 					});
 			});
 		},
- 
-		createReview({ commit, dispatch }, payload) {
-			return new Promise((resolve) => {
-				let reservation = payload.reservation;
-				reservation.wasReviewed = true;
-				const review = payload.review;
-				firebase
-					.firestore()
-					.collection("reviews")
-					.add(review)
-					.then(() => {
-						dispatch("updateReservation", reservation).then(() => {
-							commit("openSnackbar", {
-								message: "Jūsų įvertinimas išsaugotas. Ačiū, kad naudojatės mūsų paslaugomis!"
-							});
-							resolve();
-						});
-					}).catch((err) => {
-						commit("openSnackbar", {
-							message: err.message,
-						});
-						reject();
-					});
-			});
-		},
 	}
 };

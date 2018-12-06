@@ -63,7 +63,7 @@
               class="material-icons mdc-icon-button"
               title="Palikti įvertinimą"
               @click.stop="openReviewMenu(reservation)"
-            >rate_review</button>
+            >comment</button>
 
             <div :id="`menu-${reservation.id}`" class="mdc-menu mdc-menu-surface" tabindex="-1">
               <ul class="mdc-list mdc-list--non-interactive" role="menu" aria-hidden="true" aria-orientation="vertical">

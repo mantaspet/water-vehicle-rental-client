@@ -68,6 +68,14 @@ const router = new Router({
       },
     },
     {
+      path: '/reviews',
+      name: 'reviews',
+      component: () => import(/* webpackChunkName: "reviews" */ './views/Reviews.vue'),
+      meta: {
+        requiresAuth: true,
+      },
+    },
+    {
       path: '/about',
       name: 'about',
       component: () => import(/* webpackChunkName: "about" */ './views/About.vue'),

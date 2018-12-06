@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="header-wrapper">
-      <h1 class="mdc-typography--headline4">{{ title }}</h1>
+      <h1 class="mdc-typography--headline4">Užduotys</h1>
       <div style="display: flex">
         <div v-show="$userRole('admin')" id="employee" class="mdc-select">
           <i class="mdc-select__dropdown-icon"></i>
@@ -55,14 +55,6 @@ export default {
       timer: null,
       selectedEmployee: null
     };
-  },
-
-  computed: {
-    title() {
-      return this.$store.getters.currentUser.role === "admin"
-        ? "Darbuotojų veiklos ataskaita"
-        : "Užduočių sąrašas";
-    }
   },
 
   created() {

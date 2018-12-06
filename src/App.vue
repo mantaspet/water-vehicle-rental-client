@@ -115,7 +115,8 @@ export default {
         { text: "Klientai", route: "/clients", icon: "person" },
         { text: "Darbuotojai", route: "/employees", icon: "build" },
         { text: "Užduotys", route: "/tasks", icon: "assignment" },
-        { text: "Apie įmonę", route: "/about", icon: "description" }
+        { text: "Atsiliepimai", route: "/reviews", icon: "comment" },
+        { text: "Apie įmonę", route: "/about", icon: "description" },
       ]
     };
   },
