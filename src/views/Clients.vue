@@ -27,7 +27,6 @@
 
 <script>
 import DataTable from "../components/DataTable";
-import firebase from "firebase";
 
 export default {
   name: "Clients",

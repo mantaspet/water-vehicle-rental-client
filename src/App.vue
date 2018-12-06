@@ -114,6 +114,7 @@ export default {
         { text: "Rezervacijos", route: "/reservations", icon: "event" },
         { text: "Klientai", route: "/clients", icon: "person" },
         { text: "Darbuotojai", route: "/employees", icon: "build" },
+        { text: "Užduotys", route: "/tasks", icon: "assignment" },
         { text: "Apie įmonę", route: "/about", icon: "description" }
       ]
     };
@@ -185,6 +186,9 @@ export default {
 @import "@material/fab/mdc-fab";
 @import "@material/grid-list/mdc-grid-list";
 @import "@material/select/mdc-select";
+@import "@material/list/mdc-list";
+@import "@material/form-field/mdc-form-field";
+@import "@material/checkbox/mdc-checkbox";
 
 body {
   height: 100vh;

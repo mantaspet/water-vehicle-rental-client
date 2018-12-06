@@ -60,6 +60,14 @@ const router = new Router({
       },
     },
     {
+      path: '/tasks',
+      name: 'tasks',
+      component: () => import(/* webpackChunkName: "tasks" */ './views/Tasks.vue'),
+      meta: {
+        requiresAuth: true,
+      },
+    },
+    {
       path: '/about',
       name: 'about',
       component: () => import(/* webpackChunkName: "about" */ './views/About.vue'),
