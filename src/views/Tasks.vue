@@ -60,10 +60,8 @@ export default {
   created() {
     if (this.$userRole("admin")) {
       this.$store.dispatch("getEmployees");
-      this.$store.dispatch("getTasks");
-    } else {
-      this.$store.dispatch("getEmployeeTasks", this.$store.getters.currentUser.userId);
     }
+    this.$store.dispatch("getTasks");
   },
 
   mounted() {
